@@ -15,35 +15,21 @@
  * limitations under the License.
  */
 
-package com.tarena.passport.protocol.enums;
+package com.tarena.passport.doman.repository;
 
-import lombok.Getter;
+import com.tarena.passport.common.pojo.model.User;
+import org.springframework.stereotype.Repository;
 
-@Getter
-public enum ResultEnum {
+@Repository
+public interface UserRepository {
 
-    OK(0, "success"),
-    BIND_ERROR(1, "非法入参"),
-    SYSTEM_ERROR(-1, "system error"),
+    int addNewUser(User user);
 
-    //全局
-    TOKEN_EXPIRES(1000, "登录过期,请重新登录"),
-    TOKEN_PASSWORD_ERROR(1001, "用户名密码错误"),
+    User getUserByUsername(String username);
 
-    SYS_USER_DISABLE(2000, "用户已被禁用"),
-    SYS_USER_NON_EXISTENT(2001, "用户不存在"),
-    SYS_USER_PERMISSION_DENIED(2002, "权限不足"),
-    SYS_USER_ALREADY_EXISTS(2003, "用户名存在"),
-    SYS_PHONE_ALREADY_EXISTS(2004,"手机号已注册"),
-    SYS_MAILBOX_ALREADY_EXISTS(2005,"邮箱已注册");
+    User getUserByPhone(String phone);
 
-    ResultEnum(Integer code, String message) {
-        this.code = code;
-        this.message = message;
-    }
+    User getUserByMail(String email);
 
-    private Integer code;
-
-    private String message;
 
 }

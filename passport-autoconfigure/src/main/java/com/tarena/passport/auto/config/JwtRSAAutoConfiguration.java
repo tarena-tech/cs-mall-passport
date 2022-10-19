@@ -18,7 +18,7 @@ package com.tarena.passport.auto.config;
 
 import com.tarena.passport.auto.domain.JwtRSAGenerator;
 import com.tarena.passport.auto.properties.JwtRSAEncodeProperties;
-import com.tarena.passport.protocol.LoginInfo;
+
 import com.tarena.passport.protocol.PassportBusinessException;
 import com.tarena.passport.protocol.enums.ResultEnum;
 import org.apache.commons.lang3.StringUtils;
@@ -30,14 +30,14 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration(proxyBeanMethods = false)
+@Configuration(proxyBeanMethods = false) // 是lite模式  ，可以避免拦截方法进行代理操作，也是提升性能的一种优化
 @ConditionalOnProperty(prefix = "jwt.rsa", value = "enabled", havingValue = "true")
 @EnableConfigurationProperties(JwtRSAEncodeProperties.class)
 public class JwtRSAAutoConfiguration {
     private static Logger logger = LoggerFactory.getLogger(JwtRSAAutoConfiguration.class);
 
     @Bean
-    @ConditionalOnMissingBean(JwtRSAGenerator.class)
+    @ConditionalOnMissingBean(JwtRSAGenerator.class)//保证你的bean只有一个，即你的实例只有一个，当你注册多个相同的bean时，会出现异常
     public JwtRSAGenerator initJwtComponent(JwtRSAEncodeProperties properties) throws PassportBusinessException {
         JwtRSAGenerator generator = new JwtRSAGenerator();
         if (StringUtils.isEmpty(properties.getPrivateKey())) {

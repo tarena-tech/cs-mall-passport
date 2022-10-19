@@ -14,15 +14,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tarena.passport.common;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+package com.tarena.passport.common.pojo.dto;
 
 
-public class CommomApi {
-    public static void main(String[] args) {
-        SpringApplication.run(CommomApi.class,args);
-    }
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Accessors(chain = true)
+public class UserAddNewDTO implements Serializable {
+    @NotNull(message = "请输入用户名！")
+    private String username;
+    @NotNull(message = "请输入密码！")
+    private String password;
+    @NotNull(message = "昵称！")
+    private String nickname;
+    @NotNull(message = "请输入手机号！")
+    private String phone;
+    @NotNull(message = "邮箱！")
+    private String email;
+    private Integer enable;
+
+
+
 }

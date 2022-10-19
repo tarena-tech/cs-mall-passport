@@ -14,15 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tarena.passport.common;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+package com.tarena.passport.instruction.mapper;
 
+import com.tarena.passport.common.pojo.model.User;
 
-public class CommomApi {
-    public static void main(String[] args) {
-        SpringApplication.run(CommomApi.class,args);
-    }
+public interface UserMapper {
+    int addNewUser(User user);
+
+    User getUserByUserName(String username);
+
+    User getUserByPhone(String phone);
+
+    User getUserByMail(String mail);
 }

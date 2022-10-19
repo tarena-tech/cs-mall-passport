@@ -25,10 +25,8 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
@@ -42,11 +40,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 
 @Slf4j
+//JWT 令牌生成器
 public class JwtRSAGenerator<T> {
+    //私钥
     private String privateKey;
+    //公钥
     private String publicKey;
+    //过期时间
     private Long expiration;
-
+    //登录的用户角色
     private static final String CLAIM_PAYLOAD = "PAYLOAD";
     //自定义创建时间
     private static final String CLAIM_CREATED = "CREATED";
@@ -63,13 +65,17 @@ public class JwtRSAGenerator<T> {
 
     private String generateToken(Map<String, Object> claims, String privateKey,
         Long expiration) throws PassportBusinessException {
+        //构建JWT
         JwtBuilder builder = null;
         if (privateKey == null) {
+            //如果私钥为null，抛出异常
             log.error("you are using null privateKey to encode jwt");
             throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
         } else {
             try {
+                //如果 私钥不为null，则获取私钥
                 RSAPrivateKey key = getRSAPrivateKey(privateKey);
+                //构建JWT
                 builder = Jwts.builder().setClaims(claims).setExpiration(generateExpirationDate(claims, expiration)).signWith(SignatureAlgorithm.RS256, key);
             } catch (NoSuchAlgorithmException e) {
                 log.error("failed to get rsa privateKey,please ensure your privateKey is correct");
@@ -81,11 +87,13 @@ public class JwtRSAGenerator<T> {
         }
         return builder.compact();
     }
-
+    //获取用户登录有效期
     private Date generateExpirationDate(Map<String, Object> claims, Long expiration) {
+        //用户登录时间+有效时长 = 实际有限期
         return new Date(((Date) claims.get(CLAIM_CREATED)).getTime() + expiration);
     }
 
+    //获取私钥
     private static RSAPrivateKey getRSAPrivateKey(String priKey) throws NoSuchAlgorithmException {
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(Base64.decodeBase64(priKey));
         RSAPrivateKey privateKey = null;
@@ -97,6 +105,8 @@ public class JwtRSAGenerator<T> {
         }
         return privateKey;
     }
+
+    //获取公钥
     private RSAPublicKey getRSAPublicKey(String pubKey) throws NoSuchAlgorithmException {
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.decodeBase64(pubKey));
         RSAPublicKey publicKey = null;
@@ -108,6 +118,7 @@ public class JwtRSAGenerator<T> {
         }
         return publicKey;
     }
+    //解析JWT
     public T getLoginFromToken(String token, Class<? extends T> clazz) throws PassportBusinessException {
         Jws<Claims> jws = null;
         try {
@@ -125,18 +136,18 @@ public class JwtRSAGenerator<T> {
             log.error("parse token fail, token:[{}], publicKey:[{}], err:[{}]", token, publicKey, Throwables.getStackTraceAsString(e));
             throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
         }
-        if (jws == null){
+        if (jws == null) {
             log.error("jws parsed result is null");
             throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
         }
         Claims claims = jws.getBody();
-        try{
+        try {
             String loginTokenJson = (String) claims.get(CLAIM_PAYLOAD);
             return JSON.parseObject(loginTokenJson,clazz);
-        }catch (ClassCastException e){
+        } catch (ClassCastException e) {
             log.error("token is not matched the parse pattern");
             throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error("clazz:{} cannot use as the parse object Class", clazz.getName());
             throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
         }

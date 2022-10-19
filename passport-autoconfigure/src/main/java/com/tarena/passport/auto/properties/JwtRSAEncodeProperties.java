@@ -17,12 +17,16 @@
 package com.tarena.passport.auto.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-
+//此注解通过递归查找属性，通过反射将其属性赋值给以下变量
 @ConfigurationProperties("jwt.rsa")
 public class JwtRSAEncodeProperties {
+    //
     private Boolean enabled;
+    //私钥
     private String privateKey;
+    //公钥
     private String publicKey;
+    //有效时长
     private Long expiration;
 
     public Long getExpiration() {

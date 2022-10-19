@@ -14,15 +14,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tarena.passport.common;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+package com.tarena.passport.protocol.handler;
 
+import com.tarena.passport.protocol.PassportBusinessException;
+import com.tarena.passport.protocol.result.JsonResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-public class CommomApi {
-    public static void main(String[] args) {
-        SpringApplication.run(CommomApi.class,args);
+@RestControllerAdvice
+public class PassportExceptionHandler {
+
+    @ExceptionHandler
+    public JsonResult<Void> handleServiceException(PassportBusinessException e) {
+        return JsonResult.fail(e);
     }
 }
