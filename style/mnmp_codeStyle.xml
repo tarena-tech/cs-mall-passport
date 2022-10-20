@@ -16,17 +16,28 @@
   -->
 
 <code_scheme name="tedu-mnmp">
+    <!--使用相同的缩进-->
     <option name="USE_SAME_INDENTS" value="true"/>
+    <!--忽略语言的相同缩进-->
     <option name="IGNORE_SAME_INDENTS_FOR_LANGUAGES" value="true"/>
+    <!--其他缩进选项-->
     <option name="OTHER_INDENT_OPTIONS">
         <value>
+            <!--缩进的大小  为4-->
             <option name="INDENT_SIZE" value="4"/>
+            <!--继续缩进大小  为4-->
             <option name="CONTINUATION_INDENT_SIZE" value="4"/>
+            <!--标签的尺寸  为4-->
             <option name="TAB_SIZE" value="4"/>
+            <!--不使用制表符-->
             <option name="USE_TAB_CHARACTER" value="false"/>
+            <!--不使用智能标签-->
             <option name="SMART_TABS" value="false"/>
+            <!--标签缩进  为0-->
             <option name="LABEL_INDENT_SIZE" value="0"/>
+            <!--不使用绝对缩进-->
             <option name="LABEL_INDENT_ABSOLUTE" value="false"/>
+            <!--不使用相对缩进-->
             <option name="USE_RELATIVE_INDENTS" value="false"/>
         </value>
     </option>

@@ -14,15 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tarena.passport.common;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+package com.tarena.passport.instruction.config;
 
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.context.annotation.Configuration;
 
-public class CommomApi {
-    public static void main(String[] args) {
-        SpringApplication.run(CommomApi.class,args);
-    }
+@MapperScan("com.tarena.passport.instruction.mapper")
+@Configuration
+public class MybatisConfiguration {
 }
