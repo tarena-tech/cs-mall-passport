@@ -17,6 +17,7 @@
         <module>passport-common</module>
         <module>passport-protocol</module>
         <module>passport-autoconfigure</module>
+        <module>passport-main</module>
 
     </modules>
 
