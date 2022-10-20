@@ -18,7 +18,6 @@ package com.tarena.passport.auto.config;
 
 import com.tarena.passport.auto.domain.JwtRSAGenerator;
 import com.tarena.passport.auto.properties.JwtRSAEncodeProperties;
-import com.tarena.passport.protocol.LoginInfo;
 import com.tarena.passport.protocol.PassportBusinessException;
 import com.tarena.passport.protocol.enums.ResultEnum;
 import org.apache.commons.lang3.StringUtils;

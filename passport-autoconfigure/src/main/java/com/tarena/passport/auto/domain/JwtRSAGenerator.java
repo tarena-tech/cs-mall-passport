@@ -25,10 +25,8 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
@@ -97,6 +95,7 @@ public class JwtRSAGenerator<T> {
         }
         return privateKey;
     }
+
     private RSAPublicKey getRSAPublicKey(String pubKey) throws NoSuchAlgorithmException {
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.decodeBase64(pubKey));
         RSAPublicKey publicKey = null;
@@ -108,6 +107,7 @@ public class JwtRSAGenerator<T> {
         }
         return publicKey;
     }
+
     public T getLoginFromToken(String token, Class<? extends T> clazz) throws PassportBusinessException {
         Jws<Claims> jws = null;
         try {
@@ -125,18 +125,18 @@ public class JwtRSAGenerator<T> {
             log.error("parse token fail, token:[{}], publicKey:[{}], err:[{}]", token, publicKey, Throwables.getStackTraceAsString(e));
             throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
         }
-        if (jws == null){
+        if (jws == null) {
             log.error("jws parsed result is null");
             throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
         }
         Claims claims = jws.getBody();
-        try{
+        try {
             String loginTokenJson = (String) claims.get(CLAIM_PAYLOAD);
-            return JSON.parseObject(loginTokenJson,clazz);
-        }catch (ClassCastException e){
+            return JSON.parseObject(loginTokenJson, clazz);
+        } catch (ClassCastException e) {
             log.error("token is not matched the parse pattern");
             throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.error("clazz:{} cannot use as the parse object Class", clazz.getName());
             throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
         }
