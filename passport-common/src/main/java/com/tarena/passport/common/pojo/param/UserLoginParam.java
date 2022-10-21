@@ -15,20 +15,18 @@
  * limitations under the License.
  */
 
-package com.tarena.passport.instruction.mapper;
+package com.tarena.passport.common.pojo.param;
 
-import com.tarena.passport.common.pojo.model.UserDO;
-import com.tarena.passport.common.pojo.model.UserLogDO;
+import javax.validation.constraints.NotNull;
+import lombok.Data;
 
-public interface UserMapper {
-    int addNewUser(UserDO userDO);
+@Data
+public class UserLoginParam {
 
-    UserDO getUserByUserName(String username);
-
-    UserDO getUserByPhone(String phone);
-
-    UserDO getUserByMail(String mail);
-
+    @NotNull(message = "用户名不能为空")
+    private String username;
+    @NotNull(message = "密码不能为空")
+    private String password;
 
 
 }

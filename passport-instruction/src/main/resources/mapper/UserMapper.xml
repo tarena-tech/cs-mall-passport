@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.tarena.passport.instruction.mapper.UserMapper">
-    <sql id="user">
-        username,password,nickname,phone,email,enable,gmt_create,gmt_modified
+    <sql id="userDO">
+        id,username,password,nickname,phone,email,enable,gmt_create,gmt_modified
     </sql>
-    <resultMap id="user" type="com.tarena.passport.common.pojo.model.User">
+    <resultMap id="userDO" type="com.tarena.passport.common.pojo.model.UserDO">
         <id column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
@@ -17,29 +17,29 @@
         <result column="gmt_modified" property="gmtModified"/>
     </resultMap>
     <insert id="addNewUser" useGeneratedKeys="true" keyProperty="id">
-         INSERT INTO CMP_ADMIN
+         INSERT INTO cmp_admin
                      (username,password,nickname,phone,email,enable,gmt_create,gmt_modified)
             VALUES (#{username},#{password},#{nickname},#{phone},#{email},#{enable},#{gmtCreate},#{gmtModified})
     </insert>
 
-    <select id="getUserByUserName" resultMap="user">
+    <select id="getUserByUserName" resultMap="userDO">
             SELECT
-                <include refid="user"/>
-            FROM CMP_ADMIN
+                <include refid="userDO"/>
+            FROM cmp_admin
             WHERE USERNAME=#{username}
     </select>
 
-    <select id="getUserByPhone" resultMap="user">
+    <select id="getUserByPhone" resultMap="userDO">
         SELECT
-        <include refid="user"/>
-        FROM CMP_ADMIN
+        <include refid="userDO"/>
+        FROM cmp_admin
         WHERE PHONE=#{phone}
     </select>
 
-    <select id="getUserByMail" resultMap="user">
+    <select id="getUserByMail" resultMap="userDO">
         SELECT
-        <include refid="user"/>
-        FROM CMP_ADMIN
+        <include refid="userDO"/>
+        FROM cmp_admin
         WHERE EMAIL=#{maill}
     </select>
 

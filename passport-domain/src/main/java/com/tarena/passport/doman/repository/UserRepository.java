@@ -17,19 +17,20 @@
 
 package com.tarena.passport.doman.repository;
 
-import com.tarena.passport.common.pojo.model.User;
+import com.tarena.passport.common.pojo.model.UserDO;
+import com.tarena.passport.common.pojo.model.UserLogDO;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository {
 
-    int addNewUser(User user);
+    int addNewUser(UserDO userDO);
 
-    User getUserByUsername(String username);
+    UserDO getUserByUsername(String username);
 
-    User getUserByPhone(String phone);
+    UserDO getUserByPhone(String phone);
 
-    User getUserByMail(String email);
+    UserDO getUserByMail(String email);
 
-
+    int insertUserLog(UserLogDO log);
 }

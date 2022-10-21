@@ -15,16 +15,36 @@
  * limitations under the License.
  */
 
-package com.tarena.passport.common.pojo.dto;
+package com.tarena.passport.common.pojo.model;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 @Data
-public class UserLoginDTO {
+@AllArgsConstructor
+@NoArgsConstructor
+@Accessors(chain = true)
+public class UserDO implements Serializable {
+
+    private Long id;
 
     private String username;
 
     private String password;
 
+    private String nickname;
 
+    private String phone;
+
+    private String email;
+
+    private Integer enable;
+
+    private LocalDateTime gmtCreate;
+
+    private LocalDateTime gmtModified;
 }

@@ -17,69 +17,87 @@
 
 package com.tarena.passport.doman.service.impl;
 
-import com.tarena.passport.common.pojo.dto.UserAddNewDTO;
-import com.tarena.passport.common.pojo.dto.UserLoginDTO;
-import com.tarena.passport.common.pojo.model.User;
+import com.tarena.passport.common.pojo.model.UserDO;
+import com.tarena.passport.common.pojo.model.UserLogDO;
+import com.tarena.passport.common.pojo.param.UserAddressAndBrowserNameParam;
+import com.tarena.passport.common.pojo.param.UserLoginParam;
+import com.tarena.passport.common.pojo.param.UserParam;
 import com.tarena.passport.doman.repository.UserRepository;
 import com.tarena.passport.doman.service.IUserService;
 
+import com.tarena.passport.doman.utils.PasswordEncoder;
 import com.tarena.passport.protocol.PassportBusinessException;
 import com.tarena.passport.protocol.enums.ResultEnum;
-import java.sql.Time;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
+@Slf4j
 @Service
 public class UserServiceImpl implements IUserService {
 
     @Autowired
     private UserRepository userRepository;
 
-    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
-    public void addNewUser(UserAddNewDTO userAddNewDTO) throws PassportBusinessException {
-        User user = userRepository.getUserByUsername(userAddNewDTO.getUsername());
-        if (user != null)
+    public void addNewUser(UserParam userParam) throws PassportBusinessException {
+        UserDO userDO = userRepository.getUserByUsername(userParam.getUsername());
+        if (userDO != null)
             throw new PassportBusinessException(ResultEnum.SYS_USER_ALREADY_EXISTS);
-        user = userRepository.getUserByPhone(userAddNewDTO.getPhone());
-        if (user != null)
+        userDO = userRepository.getUserByPhone(userParam.getPhone());
+        if (userDO != null)
             throw new PassportBusinessException(ResultEnum.SYS_USER_ALREADY_EXISTS);
-        user = userRepository.getUserByMail(userAddNewDTO.getEmail());
-        if (user != null)
+        userDO = userRepository.getUserByMail(userParam.getEmail());
+        if (userDO != null)
             throw new PassportBusinessException(ResultEnum.SYS_USER_ALREADY_EXISTS);
-        user = new User();
-        BeanUtils.copyProperties(userAddNewDTO, user);
+        userDO = new UserDO();
+        BeanUtils.copyProperties(userParam, userDO);
         LocalDateTime now = LocalDateTime.now();
-        user.setPassword(passwordEncoder.encode(userAddNewDTO.getPassword())).setGmtCreate(now).setGmtModified(now);
-        int row = userRepository.addNewUser(user);
+        String password = passwordEncoder.encoder(userParam.getPassword());
+        userDO.setPassword(password).setGmtCreate(now).setGmtModified(now);
+        int row = userRepository.addNewUser(userDO);
         if (row != 1)
             throw new PassportBusinessException(ResultEnum.SYS_USER_ALREADY_EXISTS);
     }
 
     @Override
-    public String login(UserLoginDTO userLoginDTO) throws PassportBusinessException {
-        String username = userLoginDTO.getUsername();
-        User user = userRepository.getUserByUsername(username);
-        if (user == null) {
-            user = userRepository.getUserByPhone(username);
+
+    public String login(UserLoginParam userLoginParam, UserAddressAndBrowserNameParam userAddressAndBrowserNameparam) throws PassportBusinessException {
+
+        if (userAddressAndBrowserNameparam.getAddress()==null) throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
+        if (userAddressAndBrowserNameparam.getBrowserName()==null) throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
+        String username = userLoginParam.getUsername();
+        UserDO userDO = userRepository.getUserByUsername(username);
+        if (userDO == null) {
+            userDO = userRepository.getUserByPhone(username);
         }
-        if (user == null) {
-            user = userRepository.getUserByMail(username);
+        if (userDO == null) {
+            userDO = userRepository.getUserByMail(username);
         }
-        if (user == null) {
+        if (userDO == null) {
             throw new PassportBusinessException(ResultEnum.SYS_USER_NON_EXISTENT);
         }
-        if (!passwordEncoder.matches(userLoginDTO.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(userLoginParam.getPassword(),userDO.getPassword())) {
             throw new PassportBusinessException(ResultEnum.TOKEN_PASSWORD_ERROR);
         }
+        log.info("登录用户信息{}",userDO);
+        log.info("登录设备{}",userAddressAndBrowserNameparam);
+        UserLogDO log = new UserLogDO();
+        log.setAdminId(userDO.getId())
+            .setIp(userAddressAndBrowserNameparam.getAddress())
+            .setNickname(userDO.getNickname())
+            .setUsername(userDO.getUsername())
+            .setGmtLogin(LocalDateTime.now())
+            .setUserAgent(userAddressAndBrowserNameparam.getBrowserName());
+        int row = userRepository.insertUserLog(log);
+        if (row!=1) throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
         return UUID.randomUUID().toString().replace("-", "");
 
     }

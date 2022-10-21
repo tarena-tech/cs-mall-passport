@@ -15,8 +15,14 @@
  * limitations under the License.
  */
 
-package com.tarena.passport.instruction.mapper;
+package com.tarena.passport.common.pojo.param;
 
-public interface UserLoginMapper {
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
+@Data
+@AllArgsConstructor
+public class UserAddressAndBrowserNameParam {
+    private String address;
+    private String browserName;
 }

@@ -15,20 +15,11 @@
  * limitations under the License.
  */
 
-package com.tarena.passport.instruction.mapper;
-
-import com.tarena.passport.common.pojo.model.UserDO;
-import com.tarena.passport.common.pojo.model.UserLogDO;
-
-public interface UserMapper {
-    int addNewUser(UserDO userDO);
-
-    UserDO getUserByUserName(String username);
-
-    UserDO getUserByPhone(String phone);
-
-    UserDO getUserByMail(String mail);
+package com.tarena.passport.common.pojo.param;
 
 
+public interface Check {
 
+     interface Create {}
+     interface Update {}
 }

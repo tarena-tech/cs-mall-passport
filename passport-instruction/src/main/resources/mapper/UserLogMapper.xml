@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.tarena.passport.instruction.mapper.UserLogMapper">
+    <sql id="UserLog">
+        username,password,nickname,phone,email,enable,gmt_create,gmt_modified
+    </sql>
+    <resultMap id="UserLog" type="com.tarena.passport.common.pojo.model.UserLogDO">
+        <id column="id" property="id"/>
+        <result column="admin_id" property="adminId"/>
+        <result column="username" property="username"/>
+        <result column="nickname" property="nickname"/>
+        <result column="ip" property="ip"/>
+        <result column="user_agent" property="userAgent"/>
+        <result column="gmt_login" property="gmtLogin"/>
+    </resultMap>
+    <insert id="insertUserLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO cmp_login_log (admin_id,username,nickname,ip,user_agent,gmt_login)
+        VALUES (#{adminId},#{username},#{nickname},#{ip},#{userAgent},#{gmtLogin})
+    </insert>
+
+</mapper>
