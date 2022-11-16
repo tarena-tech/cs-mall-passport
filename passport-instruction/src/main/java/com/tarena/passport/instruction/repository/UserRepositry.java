@@ -24,8 +24,9 @@ import com.tarena.passport.instruction.mapper.UserLogMapper;
 import com.tarena.passport.instruction.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
+@Repository
 public class UserRepositry implements UserRepository {
     @Autowired
     private UserMapper userMapper;

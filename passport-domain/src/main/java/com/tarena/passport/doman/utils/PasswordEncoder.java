@@ -19,7 +19,6 @@ package com.tarena.passport.doman.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.Random;
 import java.util.UUID;
 import org.springframework.context.annotation.Configuration;
@@ -76,7 +75,7 @@ public class PasswordEncoder {
         return new String(chars).trim().substring(0,62);
     }
 
-   private static String md5Encoder(String password) {
+    private static String md5Encoder(String password) {
         String md5 = "";
         try {
             MessageDigest digest = MessageDigest.getInstance("MD5");

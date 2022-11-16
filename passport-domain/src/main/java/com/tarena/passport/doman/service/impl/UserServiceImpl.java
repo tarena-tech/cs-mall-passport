@@ -17,6 +17,7 @@
 
 package com.tarena.passport.doman.service.impl;
 
+import com.tarena.passport.auto.domain.JwtRSAGenerator;
 import com.tarena.passport.common.pojo.model.UserDO;
 import com.tarena.passport.common.pojo.model.UserLogDO;
 import com.tarena.passport.common.pojo.param.UserAddressAndBrowserNameParam;
@@ -26,6 +27,7 @@ import com.tarena.passport.doman.repository.UserRepository;
 import com.tarena.passport.doman.service.IUserService;
 
 import com.tarena.passport.doman.utils.PasswordEncoder;
+import com.tarena.passport.protocol.LoginInfo;
 import com.tarena.passport.protocol.PassportBusinessException;
 import com.tarena.passport.protocol.enums.ResultEnum;
 import java.time.LocalDateTime;
@@ -35,7 +37,7 @@ import org.springframework.beans.BeanUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
+
 @Slf4j
 @Service
 public class UserServiceImpl implements IUserService {
@@ -45,6 +47,11 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtRSAGenerator<LoginInfo> jwtRSAGenerator;
+
+
 
     @Override
     public void addNewUser(UserParam userParam) throws PassportBusinessException {
@@ -90,15 +97,18 @@ public class UserServiceImpl implements IUserService {
         log.info("登录用户信息{}",userDO);
         log.info("登录设备{}",userAddressAndBrowserNameparam);
         UserLogDO log = new UserLogDO();
-        log.setAdminId(userDO.getId())
-            .setIp(userAddressAndBrowserNameparam.getAddress())
-            .setNickname(userDO.getNickname())
-            .setUsername(userDO.getUsername())
-            .setGmtLogin(LocalDateTime.now())
-            .setUserAgent(userAddressAndBrowserNameparam.getBrowserName());
-        int row = userRepository.insertUserLog(log);
-        if (row!=1) throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
-        return UUID.randomUUID().toString().replace("-", "");
+//        log.setAdminId(userDO.getId())
+//            .setIp(userAddressAndBrowserNameparam.getAddress())
+//            .setNickname(userDO.getNickname())
+//            .setUsername(userDO.getUsername())
+//            .setGmtLogin(LocalDateTime.now())
+//            .setUserAgent(userAddressAndBrowserNameparam.getBrowserName());
+//        int row = userRepository.insertUserLog(log);
+//        if (row!=1) throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setId(userDO.getId());
+        String jwt = jwtRSAGenerator.generateToken(loginInfo);
+        return jwt;
 
     }
 }
