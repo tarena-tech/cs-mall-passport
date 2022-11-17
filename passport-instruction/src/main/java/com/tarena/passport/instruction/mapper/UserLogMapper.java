@@ -17,20 +17,10 @@
 
 package com.tarena.passport.instruction.mapper;
 
-import com.tarena.passport.common.pojo.model.UserDO;
 import com.tarena.passport.common.pojo.model.UserLogDO;
 
-public interface UserMapper {
-    int addNewUser(UserDO userDO);
+public interface UserLogMapper {
 
-    UserDO getUserByUserName(String username);
-
-    UserDO getUserByPhone(String phone);
-
-    UserDO getUserByMail(String mail);
-
-    UserDO getUserByUserID(Long id);
-
-
+    int insertUserLog(UserLogDO log);
 
 }

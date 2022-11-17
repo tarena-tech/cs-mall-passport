@@ -18,7 +18,9 @@
 package com.tarena.passport.protocol.handler;
 
 import com.tarena.passport.protocol.PassportBusinessException;
+import com.tarena.passport.protocol.enums.ResultEnum;
 import com.tarena.passport.protocol.result.JsonResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -28,5 +30,11 @@ public class PassportExceptionHandler {
     @ExceptionHandler
     public JsonResult<Void> handleServiceException(PassportBusinessException e) {
         return JsonResult.fail(e);
+    }
+
+    @ExceptionHandler
+    public JsonResult<Void> handleConstraintViolationException(MethodArgumentNotValidException e) {
+
+        return JsonResult.fail(2009,"请正确输入信息");
     }
 }

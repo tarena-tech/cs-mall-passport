@@ -15,8 +15,21 @@
  * limitations under the License.
  */
 
-package com.tarena.passport.instruction.mapper;
+package com.tarena.passport.common.pojo.model;
 
-public interface UserLoginMapper {
+import java.time.LocalDateTime;
+import java.util.Date;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
+@Data
+@Accessors(chain = true)
+public class UserLogDO {
+    private Long id;
+    private Long adminId;
+    private String username;
+    private String nickname;
+    private String ip;
+    private String userAgent;
+    private Date gmtLogin;
 }

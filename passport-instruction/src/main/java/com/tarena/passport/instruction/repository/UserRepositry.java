@@ -17,31 +17,45 @@
 
 package com.tarena.passport.instruction.repository;
 
-import com.tarena.passport.common.pojo.model.User;
+import com.tarena.passport.common.pojo.model.UserDO;
+import com.tarena.passport.common.pojo.model.UserLogDO;
 import com.tarena.passport.doman.repository.UserRepository;
+import com.tarena.passport.instruction.mapper.UserLogMapper;
 import com.tarena.passport.instruction.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
+@Repository
 public class UserRepositry implements UserRepository {
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserLogMapper userLogMapper;
     @Override
-    public int addNewUser(User user) {
-        return userMapper.addNewUser(user);
+    public int addNewUser(UserDO userDO) {
+        return userMapper.addNewUser(userDO);
     }
 
-    @Override public User getUserByUsername(String username) {
+    @Override public UserDO getUserByUsername(String username) {
         return userMapper.getUserByUserName(username);
     }
 
-    @Override public User getUserByPhone(String phone) {
+    @Override public UserDO getUserByPhone(String phone) {
         return userMapper.getUserByPhone(phone);
     }
 
-    @Override public User getUserByMail(String email) {
+    @Override public UserDO getUserByMail(String email) {
         return userMapper.getUserByMail(email);
+    }
+
+    @Override public int insertUserLog(UserLogDO log) {
+        return userLogMapper.insertUserLog(log);
+    }
+
+    @Override public UserDO getUserByUserID(Long id) {
+        return userMapper.getUserByUserID(id);
     }
 
 }

@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package com.tarena.passport.common.pojo.model;
+package com.tarena.passport.common.pojo.param;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,23 +28,19 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class User implements Serializable {
-
+public class UserParam  implements Serializable {
+    @NotNull(message = "id禁止为空",groups = Check.Update.class)
     private Long id;
-
+    @NotNull(message = "请输入用户名！",groups = Check.Create.class)
     private String username;
-
+    @NotNull(message = "请输入密码！",groups = Check.Create.class)
     private String password;
-
+    @NotNull(message = "昵称！",groups = Check.Create.class)
     private String nickname;
-
+    @NotNull(message = "请输入手机号！",groups = Check.Create.class)
     private String phone;
-
+    @NotNull(message = "邮箱！",groups = Check.Create.class)
     private String email;
-
     private Integer enable;
 
-    private LocalDateTime gmtCreate;
-
-    private LocalDateTime gmtModified;
 }
