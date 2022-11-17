@@ -29,6 +29,8 @@ public interface UserMapper {
 
     UserDO getUserByMail(String mail);
 
+    UserDO getUserByUserID(Long id);
+
 
 
 }

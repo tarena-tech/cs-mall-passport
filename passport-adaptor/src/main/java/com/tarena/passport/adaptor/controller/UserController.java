@@ -23,6 +23,7 @@ import com.tarena.passport.common.pojo.param.UserAddressAndBrowserNameParam;
 import com.tarena.passport.common.pojo.param.UserLoginParam;
 import com.tarena.passport.common.pojo.param.UserParam;
 import com.tarena.passport.common.pojo.param.Check;
+import com.tarena.passport.common.pojo.view.UserView;
 import com.tarena.passport.doman.service.IUserService;
 import com.tarena.passport.protocol.PassportBusinessException;
 import com.tarena.passport.protocol.result.JsonResult;
@@ -30,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,6 +59,13 @@ public class UserController{
         UserAddressAndBrowserNameParam param = new UserAddressAndBrowserNameParam(address,browserName);
         String token=userService.login(userLoginParam,param);
         return JsonResult.ok(token);
+    }
+
+    @GetMapping("/user-details")
+    public JsonResult<UserView> userDetails(HttpServletRequest request) throws PassportBusinessException {
+        String jwt = request.getHeader("Authorization");
+        UserView userDetails = userService.getUserDetails(jwt);
+        return JsonResult.ok(userDetails);
     }
 
 

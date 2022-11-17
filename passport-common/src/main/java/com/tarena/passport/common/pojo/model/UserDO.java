@@ -19,6 +19,7 @@ package com.tarena.passport.common.pojo.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,7 +45,7 @@ public class UserDO implements Serializable {
 
     private Integer enable;
 
-    private LocalDateTime gmtCreate;
+    private Date gmtCreate;
 
-    private LocalDateTime gmtModified;
+    private Date gmtModified;
 }

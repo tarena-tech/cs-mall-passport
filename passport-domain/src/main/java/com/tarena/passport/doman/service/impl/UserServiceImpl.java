@@ -23,6 +23,7 @@ import com.tarena.passport.common.pojo.model.UserLogDO;
 import com.tarena.passport.common.pojo.param.UserAddressAndBrowserNameParam;
 import com.tarena.passport.common.pojo.param.UserLoginParam;
 import com.tarena.passport.common.pojo.param.UserParam;
+import com.tarena.passport.common.pojo.view.UserView;
 import com.tarena.passport.doman.repository.UserRepository;
 import com.tarena.passport.doman.service.IUserService;
 
@@ -31,6 +32,7 @@ import com.tarena.passport.protocol.LoginInfo;
 import com.tarena.passport.protocol.PassportBusinessException;
 import com.tarena.passport.protocol.enums.ResultEnum;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -66,9 +68,9 @@ public class UserServiceImpl implements IUserService {
             throw new PassportBusinessException(ResultEnum.SYS_USER_ALREADY_EXISTS);
         userDO = new UserDO();
         BeanUtils.copyProperties(userParam, userDO);
-        LocalDateTime now = LocalDateTime.now();
+        Date date = new Date();
         String password = passwordEncoder.encoder(userParam.getPassword());
-        userDO.setPassword(password).setGmtCreate(now).setGmtModified(now);
+        userDO.setPassword(password).setGmtCreate(date).setGmtModified(date);
         int row = userRepository.addNewUser(userDO);
         if (row != 1)
             throw new PassportBusinessException(ResultEnum.SYS_USER_ALREADY_EXISTS);
@@ -97,18 +99,35 @@ public class UserServiceImpl implements IUserService {
         log.info("登录用户信息{}",userDO);
         log.info("登录设备{}",userAddressAndBrowserNameparam);
         UserLogDO log = new UserLogDO();
-//        log.setAdminId(userDO.getId())
-//            .setIp(userAddressAndBrowserNameparam.getAddress())
-//            .setNickname(userDO.getNickname())
-//            .setUsername(userDO.getUsername())
-//            .setGmtLogin(LocalDateTime.now())
-//            .setUserAgent(userAddressAndBrowserNameparam.getBrowserName());
-//        int row = userRepository.insertUserLog(log);
-//        if (row!=1) throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
+        log.setAdminId(userDO.getId())
+            .setIp(userAddressAndBrowserNameparam.getAddress())
+            .setNickname(userDO.getNickname())
+            .setUsername(userDO.getUsername())
+            .setGmtLogin(new Date())
+            .setUserAgent(userAddressAndBrowserNameparam.getBrowserName());
+        int row = userRepository.insertUserLog(log);
+        if (row!=1) throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
         LoginInfo loginInfo = new LoginInfo();
         loginInfo.setId(userDO.getId());
         String jwt = jwtRSAGenerator.generateToken(loginInfo);
         return jwt;
 
+    }
+
+    @Override
+    public UserView getUserDetails(String jwt) throws PassportBusinessException {
+        LoginInfo loginInfo = jwtRSAGenerator.getLoginFromToken(jwt, LoginInfo.class);
+        if (loginInfo==null){
+            throw new PassportBusinessException(ResultEnum.TOKEN_EXPIRES);
+        }
+        UserDO userDO = userRepository.getUserByUserID(loginInfo.getId());
+
+        if (userDO == null) {
+            throw new PassportBusinessException(ResultEnum.SYS_USER_NON_EXISTENT);
+        }
+        UserView userView = new UserView();
+        BeanUtils.copyProperties(userDO,userView);
+        userView.setPassword("{protected}");
+        return userView;
     }
 }

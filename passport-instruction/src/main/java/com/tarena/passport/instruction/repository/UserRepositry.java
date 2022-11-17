@@ -54,4 +54,8 @@ public class UserRepositry implements UserRepository {
         return userLogMapper.insertUserLog(log);
     }
 
+    @Override public UserDO getUserByUserID(Long id) {
+        return userMapper.getUserByUserID(id);
+    }
+
 }

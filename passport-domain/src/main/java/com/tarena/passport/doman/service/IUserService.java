@@ -20,6 +20,7 @@ package com.tarena.passport.doman.service;
 import com.tarena.passport.common.pojo.param.UserAddressAndBrowserNameParam;
 import com.tarena.passport.common.pojo.param.UserLoginParam;
 import com.tarena.passport.common.pojo.param.UserParam;
+import com.tarena.passport.common.pojo.view.UserView;
 import com.tarena.passport.protocol.PassportBusinessException;
 
 public interface IUserService {
@@ -27,4 +28,6 @@ public interface IUserService {
     void addNewUser(UserParam userParam) throws PassportBusinessException;
 
     String login(UserLoginParam userLoginParam, UserAddressAndBrowserNameParam param) throws PassportBusinessException;
+
+    UserView getUserDetails(String jwt) throws PassportBusinessException;
 }

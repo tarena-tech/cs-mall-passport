@@ -29,6 +29,13 @@
             WHERE USERNAME=#{username}
     </select>
 
+    <select id="getUserByUserID" resultMap="userDO">
+        SELECT
+        <include refid="userDO"/>
+        FROM cmp_admin
+        WHERE id=#{id}
+    </select>
+
     <select id="getUserByPhone" resultMap="userDO">
         SELECT
         <include refid="userDO"/>

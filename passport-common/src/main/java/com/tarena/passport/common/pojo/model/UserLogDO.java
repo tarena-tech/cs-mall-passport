@@ -18,6 +18,7 @@
 package com.tarena.passport.common.pojo.model;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -30,5 +31,5 @@ public class UserLogDO {
     private String nickname;
     private String ip;
     private String userAgent;
-    private LocalDateTime gmtLogin;
+    private Date gmtLogin;
 }

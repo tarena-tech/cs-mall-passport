@@ -33,4 +33,6 @@ public interface UserRepository {
     UserDO getUserByMail(String email);
 
     int insertUserLog(UserLogDO log);
+
+    UserDO getUserByUserID(Long id);
 }
