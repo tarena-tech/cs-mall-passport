@@ -25,7 +25,9 @@ public class LoginToken implements Serializable {
     private String username;
 
     private String role;
+    private List<String> authorities;
 
+    private String deviceIp;
     public String getRole() {
         return this.authorities.get(0);
     }
@@ -34,9 +36,7 @@ public class LoginToken implements Serializable {
         this.role = role;
     }
 
-    private List<String> authorities;
 
-    private String deviceIp;
 
     public String getDeviceIp() {
         return deviceIp;
