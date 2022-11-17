@@ -1,8 +1,10 @@
 package com.tarena.passport.common.pojo.view;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 public class UserView {
@@ -19,8 +21,10 @@ public class UserView {
     private String email;
 
     private Integer enable;
-
-    private Date gmtCreate;
-
-    private Date gmtModified;
+    @JsonFormat(timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime gmtCreate;
+    @JsonFormat(timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime gmtModified;
 }
