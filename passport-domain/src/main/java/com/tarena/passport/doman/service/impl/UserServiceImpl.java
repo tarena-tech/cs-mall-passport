@@ -23,7 +23,7 @@ import com.tarena.passport.common.pojo.model.UserLogDO;
 import com.tarena.passport.common.pojo.param.UserAddressAndBrowserNameParam;
 import com.tarena.passport.common.pojo.param.UserLoginParam;
 import com.tarena.passport.common.pojo.param.UserParam;
-import com.tarena.passport.common.pojo.view.UserView;
+import com.tarena.passport.common.pojo.query.UserQuery;
 import com.tarena.passport.doman.repository.UserRepository;
 import com.tarena.passport.doman.service.IUserService;
 
@@ -31,9 +31,8 @@ import com.tarena.passport.doman.utils.PasswordEncoder;
 import com.tarena.passport.protocol.LoginInfo;
 import com.tarena.passport.protocol.PassportBusinessException;
 import com.tarena.passport.protocol.enums.ResultEnum;
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.UUID;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 
@@ -96,6 +95,9 @@ public class UserServiceImpl implements IUserService {
         if (!passwordEncoder.matches(userLoginParam.getPassword(),userDO.getPassword())) {
             throw new PassportBusinessException(ResultEnum.TOKEN_PASSWORD_ERROR);
         }
+        if (userDO.getEnable()!=1){
+            throw new PassportBusinessException(ResultEnum.SYS_USER_DISABLE);
+        }
         log.info("登录用户信息{}",userDO);
         log.info("登录设备{}",userAddressAndBrowserNameparam);
         UserLogDO log = new UserLogDO();
@@ -115,7 +117,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserView getUserDetails(String jwt) throws PassportBusinessException {
+    public UserDO getUserDetails(String jwt) throws PassportBusinessException {
         LoginInfo loginInfo = jwtRSAGenerator.getLoginFromToken(jwt, LoginInfo.class);
         if (loginInfo==null){
             throw new PassportBusinessException(ResultEnum.TOKEN_EXPIRES);
@@ -125,9 +127,12 @@ public class UserServiceImpl implements IUserService {
         if (userDO == null) {
             throw new PassportBusinessException(ResultEnum.SYS_USER_NON_EXISTENT);
         }
-        UserView userView = new UserView();
-        BeanUtils.copyProperties(userDO,userView);
-        userView.setPassword("{protected}");
-        return userView;
+
+        return userDO;
+    }
+
+    @Override public List<UserDO> getUserList(UserQuery query) {
+        List<UserDO> userList=userRepository.getUserList( query);
+        return userList;
     }
 }

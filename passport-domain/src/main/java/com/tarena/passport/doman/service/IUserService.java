@@ -17,11 +17,13 @@
 
 package com.tarena.passport.doman.service;
 
+import com.tarena.passport.common.pojo.model.UserDO;
 import com.tarena.passport.common.pojo.param.UserAddressAndBrowserNameParam;
 import com.tarena.passport.common.pojo.param.UserLoginParam;
 import com.tarena.passport.common.pojo.param.UserParam;
-import com.tarena.passport.common.pojo.view.UserView;
+import com.tarena.passport.common.pojo.query.UserQuery;
 import com.tarena.passport.protocol.PassportBusinessException;
+import java.util.List;
 
 public interface IUserService {
 
@@ -29,5 +31,7 @@ public interface IUserService {
 
     String login(UserLoginParam userLoginParam, UserAddressAndBrowserNameParam param) throws PassportBusinessException;
 
-    UserView getUserDetails(String jwt) throws PassportBusinessException;
+    UserDO getUserDetails(String jwt) throws PassportBusinessException;
+
+    List<UserDO> getUserList(UserQuery query);
 }

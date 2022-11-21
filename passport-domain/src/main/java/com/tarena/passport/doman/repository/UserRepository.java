@@ -19,6 +19,8 @@ package com.tarena.passport.doman.repository;
 
 import com.tarena.passport.common.pojo.model.UserDO;
 import com.tarena.passport.common.pojo.model.UserLogDO;
+import com.tarena.passport.common.pojo.query.UserQuery;
+import java.util.List;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -35,4 +37,6 @@ public interface UserRepository {
     int insertUserLog(UserLogDO log);
 
     UserDO getUserByUserID(Long id);
+
+    List<UserDO> getUserList(UserQuery query);
 }

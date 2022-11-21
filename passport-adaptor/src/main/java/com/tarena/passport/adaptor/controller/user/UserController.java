@@ -15,19 +15,24 @@
  * limitations under the License.
  */
 
-package com.tarena.passport.adaptor.controller;
+package com.tarena.passport.adaptor.controller.user;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.tarena.passport.adaptor.utils.AgentUtils;
 import com.tarena.passport.adaptor.utils.IPUtils;
+import com.tarena.passport.common.pojo.model.UserDO;
 import com.tarena.passport.common.pojo.param.UserAddressAndBrowserNameParam;
 import com.tarena.passport.common.pojo.param.UserLoginParam;
 import com.tarena.passport.common.pojo.param.UserParam;
 import com.tarena.passport.common.pojo.param.Check;
-import com.tarena.passport.common.pojo.view.UserView;
+import com.tarena.passport.common.pojo.query.UserQuery;
 import com.tarena.passport.doman.service.IUserService;
 import com.tarena.passport.protocol.PassportBusinessException;
 import com.tarena.passport.protocol.result.JsonResult;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -38,7 +43,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/user")
 public class UserController{
 
@@ -64,8 +68,41 @@ public class UserController{
     @GetMapping("/user-details")
     public JsonResult<UserView> userDetails(HttpServletRequest request) throws PassportBusinessException {
         String jwt = request.getHeader("Authorization");
-        UserView userDetails = userService.getUserDetails(jwt);
-        return JsonResult.ok(userDetails);
+        UserDO userDO = userService.getUserDetails(jwt);
+        UserView userView = new UserView();
+        BeanUtils.copyProperties(userDO,userView);
+        userView.setPassword("{protected}");
+        return JsonResult.ok(userView);
+    }
+
+    @PostMapping("/user-list")
+    public JsonResult<List<UserView>> userList(@RequestBody UserQuery userQuery) throws PassportBusinessException {
+        System.out.println(userQuery);
+        List<UserDO> list = userService.getUserList(userQuery);
+        ArrayList<UserView> userViews = new ArrayList<>();
+        UserView view;
+        for (UserDO userDO:list){
+            view = new UserView();
+            BeanUtils.copyProperties(userDO,view);
+            userViews.add(view);
+        }
+
+        return JsonResult.ok(userViews);
+    }
+
+    @PostMapping("/user-list")
+    public JsonResult<List<UserView>> updateUserState(@RequestBody UserQuery userQuery) throws PassportBusinessException {
+        System.out.println(userQuery);
+        List<UserDO> list = userService.getUserList(userQuery);
+        ArrayList<UserView> userViews = new ArrayList<>();
+        UserView view;
+        for (UserDO userDO:list){
+            view = new UserView();
+            BeanUtils.copyProperties(userDO,view);
+            userViews.add(view);
+        }
+
+        return JsonResult.ok(userViews);
     }
 
 
