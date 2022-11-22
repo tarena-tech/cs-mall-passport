@@ -17,7 +17,6 @@
 
 package com.tarena.passport.adaptor.controller.user;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.tarena.passport.adaptor.utils.AgentUtils;
 import com.tarena.passport.adaptor.utils.IPUtils;
 import com.tarena.passport.common.pojo.model.UserDO;
@@ -35,11 +34,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -53,7 +53,7 @@ public class UserController{
     public JsonResult<String> addNewUser(@Validated(Check.Create.class) @RequestBody UserParam userParam) throws PassportBusinessException {
 
         userService.addNewUser(userParam);
-        return JsonResult.ok("注册成功");
+        return JsonResult.ok("添加成功");
     }
 
     @PostMapping("/login")
@@ -90,20 +90,26 @@ public class UserController{
         return JsonResult.ok(userViews);
     }
 
-    @PostMapping("/user-list")
-    public JsonResult<List<UserView>> updateUserState(@RequestBody UserQuery userQuery) throws PassportBusinessException {
-        System.out.println(userQuery);
-        List<UserDO> list = userService.getUserList(userQuery);
-        ArrayList<UserView> userViews = new ArrayList<>();
-        UserView view;
-        for (UserDO userDO:list){
-            view = new UserView();
-            BeanUtils.copyProperties(userDO,view);
-            userViews.add(view);
-        }
-
-        return JsonResult.ok(userViews);
+    @PostMapping("/deleteById/{id}")
+    public JsonResult deleteUserById(@PathVariable  Long id) throws PassportBusinessException {
+        userService.deleteUserById(id);
+        return JsonResult.ok("删除成功");
     }
+
+//    @PostMapping("/user-list")
+//    public JsonResult<List<UserView>> updateUserState(@RequestBody UserQuery userQuery) throws PassportBusinessException {
+//        System.out.println(userQuery);
+//        List<UserDO> list = userService.getUserList(userQuery);
+//        ArrayList<UserView> userViews = new ArrayList<>();
+//        UserView view;
+//        for (UserDO userDO:list){
+//            view = new UserView();
+//            BeanUtils.copyProperties(userDO,view);
+//            userViews.add(view);
+//        }
+//
+//        return JsonResult.ok(userViews);
+//    }
 
 
 }
