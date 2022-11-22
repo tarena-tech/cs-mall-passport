@@ -96,20 +96,6 @@ public class UserController{
         return JsonResult.ok("删除成功");
     }
 
-//    @PostMapping("/user-list")
-//    public JsonResult<List<UserView>> updateUserState(@RequestBody UserQuery userQuery) throws PassportBusinessException {
-//        System.out.println(userQuery);
-//        List<UserDO> list = userService.getUserList(userQuery);
-//        ArrayList<UserView> userViews = new ArrayList<>();
-//        UserView view;
-//        for (UserDO userDO:list){
-//            view = new UserView();
-//            BeanUtils.copyProperties(userDO,view);
-//            userViews.add(view);
-//        }
-//
-//        return JsonResult.ok(userViews);
-//    }
 
 
 }
