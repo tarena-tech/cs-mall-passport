@@ -34,4 +34,6 @@ public interface UserMapper {
     UserDO getUserByUserID(Long id);
 
     List<UserDO> getUserList(UserQuery query);
+
+    void deleteById(Long id);
 }

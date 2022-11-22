@@ -34,4 +34,6 @@ public interface IUserService {
     UserDO getUserDetails(String jwt) throws PassportBusinessException;
 
     List<UserDO> getUserList(UserQuery query);
+
+    void deleteUserById(Long id) throws PassportBusinessException;
 }

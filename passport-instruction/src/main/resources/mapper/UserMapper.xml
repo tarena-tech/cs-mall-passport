@@ -27,6 +27,7 @@
         <include refid="userDO"/>
         FROM cmp_admin
         WHERE USERNAME=#{username}
+        and is_delete =1
     </select>
 
     <select id="getUserByUserID" resultMap="userDO">
@@ -34,6 +35,7 @@
         <include refid="userDO"/>
         FROM cmp_admin
         WHERE id=#{id}
+        and is_delete =1
     </select>
 
     <select id="getUserByPhone" resultMap="userDO">
@@ -41,6 +43,7 @@
         <include refid="userDO"/>
         FROM cmp_admin
         WHERE PHONE=#{phone}
+        and is_delete =1
     </select>
 
     <select id="getUserByMail" resultMap="userDO">
@@ -48,6 +51,7 @@
         <include refid="userDO"/>
         FROM cmp_admin
         WHERE EMAIL=#{maill}
+        and is_delete =1
     </select>
 
     <select id="getUserList" resultMap="userDO">
@@ -79,8 +83,12 @@
             <if test="gmtModified!=null">
                 AND gmtModified=#{gmtModified}
             </if>
+            and is_delete =1
         </where>
 
     </select>
+    <delete id="deleteById">
+        update cmp_admin set is_delete=0 where id=#{id}
+    </delete>
 
 </mapper>

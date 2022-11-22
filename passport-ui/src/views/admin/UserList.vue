@@ -50,9 +50,9 @@
                     </el-form-item>
                 </el-form>
                 <el-row style="margin-bottom: 10px">
-                    <el-button type="primary" plain size="mini">添加用户</el-button>
-                    <el-button type="success" plain size="mini">成功按钮</el-button>
-                    <el-button type="danger" plain size="mini">危险按钮</el-button>
+                    <el-button type="primary" plain size="mini" @click="dialogFormVisible = true">添加用户</el-button>
+                    <el-button type="success" plain size="mini">导入数据</el-button>
+                    <el-button type="danger" plain size="mini">导出数据</el-button>
                     <el-button icon="el-icon-refresh" circle size="mini" style="float: right"
                                @click="loadAdminList"></el-button>
                     <el-button icon="el-icon-search" circle size="mini" style="float: right"
@@ -137,6 +137,47 @@
                 </el-pagination>
             </el-footer>
         </el-container>
+        <el-dialog title="新增用户" :visible.sync="dialogFormVisible">
+            <el-form :model="userAdd">
+                <el-row>
+                    <el-col :span="12">
+                        <el-form-item label="用户名称" :label-width="formLabelWidth">
+                            <el-input v-model="userAdd.username" autocomplete="off">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item label="用户密码" :label-width="formLabelWidth">
+                            <el-input type="password" v-model="userAdd.password" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="用户邮箱" :label-width="formLabelWidth">
+                            <el-input v-model="userAdd.email" autocomplete="off"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="用户昵称" :label-width="formLabelWidth">
+                            <el-input v-model="userAdd.nickname" autocomplete="off">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item label="手机号码" :label-width="formLabelWidth">
+                            <el-input type="phone" v-model="userAdd.phone" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="用户状态" :label-width="formLabelWidth">
+                            <el-select v-model="userAdd.enable" placeholder="请选择">
+                                <el-option
+                                        v-for="item in options"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="addUser">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -156,6 +197,14 @@
                     gmtCreate: null,
                     gmtModified: null
                 },
+                userAdd: {
+                    username: null,
+                    password: 123456,
+                    nickname: null,
+                    phone: null,
+                    email: null,
+                    enable: null,
+                },
                 showEachState: true,
                 options: [{
                     value: '0',
@@ -163,7 +212,9 @@
                 }, {
                     value: '1',
                     label: '启用'
-                }]
+                }],
+                dialogFormVisible: false,
+                formLabelWidth: '120px'
             }
         },
         methods: {
@@ -171,17 +222,22 @@
 
             },
             handleDelete(id) {
-                // this.axios
-                //     .create({'headers': {'Authorization': localStorage.getItem("jwt")}})
-                //     .post("http://localhost:8080/user/deleteById/" + id)
-                //     .then(response => {
-                //         console.log(response)
-                //         if (response.data.state != 20000) {
-                //             this.$message.error("系统繁忙，请稍后再试")
-                //         }
-                //         this.loadAdminList()
-                //
-                //     })
+                let jwt = localStorage.getItem("jwt")
+                axios.create({'headers': {'Authorization': jwt}})
+                    .post("/deleteById/" + id)
+                    .then(response => {
+                        let r = response.data
+
+                        console.log(r)
+                        if (r.state == 0) {
+                            this.$message.success("删除成功")
+                            this.loadAdminList()
+                        } else if (r.state == -1) {
+                            localStorage.clear();
+                        } else {
+                            this.$message.error("系统繁忙，请稍后再试")
+                        }
+                    })
             },
             loadAdminList() {
                 console.log(this.userQuery)
@@ -246,6 +302,30 @@
                 } else {
                     this.showEachState = true;
                 }
+            },
+            addUser(){
+                this.dialogFormVisible = false
+                let jwt = localStorage.getItem("jwt")
+                axios.create({'headers': {'Authorization': jwt}})
+                    .post("/add-user", this.userAdd)
+                    .then(response => {
+                        let r = response.data
+
+                        if (r.state == 0) {
+                            this.$message.success(r.message)
+                            this.loadAdminList()
+                            this.userAdd.username = null;
+                            this.userAdd.nickname = null;
+                            this.userAdd.password = 123456;
+                            this.userAdd.phone = null;
+                            this.userAdd.email = null;
+                            this.userAdd.enable = null;
+                        } else if (r.state == -1) {
+                            localStorage.clear();
+                        } else {
+                            this.$message.error("系统繁忙，请稍后再试")
+                        }
+                    })
             }
         },
         created() {

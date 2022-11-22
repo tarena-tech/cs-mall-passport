@@ -65,4 +65,8 @@ public class UserRepositry implements UserRepository {
         return userList;
     }
 
+    @Override public void deleteUserById(Long id) {
+        userMapper.deleteById(id);
+    }
+
 }

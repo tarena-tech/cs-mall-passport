@@ -39,4 +39,6 @@ public interface UserRepository {
     UserDO getUserByUserID(Long id);
 
     List<UserDO> getUserList(UserQuery query);
+
+    void deleteUserById(Long id);
 }

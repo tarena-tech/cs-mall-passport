@@ -135,4 +135,13 @@ public class UserServiceImpl implements IUserService {
         List<UserDO> userList=userRepository.getUserList( query);
         return userList;
     }
+
+    @Override public void deleteUserById(Long id) throws PassportBusinessException {
+        UserDO userByUserID = userRepository.getUserByUserID(id);
+        if (userByUserID==null){
+            throw new PassportBusinessException(ResultEnum.SYS_USER_NON_EXISTENT);
+        }
+        userRepository.deleteUserById(id);
+
+    }
 }
