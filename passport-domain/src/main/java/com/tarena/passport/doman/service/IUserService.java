@@ -22,6 +22,7 @@ import com.tarena.passport.common.pojo.param.UserAddressAndBrowserNameParam;
 import com.tarena.passport.common.pojo.param.UserLoginParam;
 import com.tarena.passport.common.pojo.param.UserParam;
 import com.tarena.passport.common.pojo.query.UserQuery;
+import com.tarena.passport.doman.repository.UserRepository;
 import com.tarena.passport.protocol.PassportBusinessException;
 import java.util.List;
 
@@ -36,4 +37,12 @@ public interface IUserService {
     List<UserDO> getUserList(UserQuery query);
 
     void deleteUserById(Long id) throws PassportBusinessException;
+
+    UserDO selectUserById(Long id);
+
+    void updateUser(UserParam user) throws PassportBusinessException;
+
+    void setEnable(Long id) throws PassportBusinessException;
+
+    void setDisable(Long id) throws PassportBusinessException;
 }

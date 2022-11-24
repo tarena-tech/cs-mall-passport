@@ -55,6 +55,7 @@ public class JsonResult<T> implements Serializable {
         return new JsonResult(ResultEnum.OK.getCode(), null, data);
     }
 
+
     public static JsonResult<Void> fail(PassportBusinessException e) {
         return fail(e.getCode(), e.getMessage());
     }

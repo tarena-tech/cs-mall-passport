@@ -15,35 +15,16 @@
  * limitations under the License.
  */
 
-package com.tarena.passport.doman.repository;
+package com.tarena.passport.common.pojo.query;
 
-import com.tarena.passport.common.pojo.model.UserDO;
-import com.tarena.passport.common.pojo.model.UserLogDO;
-import com.tarena.passport.common.pojo.param.UserParam;
-import com.tarena.passport.common.pojo.query.UserQuery;
-import java.util.List;
-import org.springframework.stereotype.Repository;
+import lombok.Data;
 
-@Repository
-public interface UserRepository {
-
-    int addNewUser(UserDO userDO);
-
-    UserDO getUserByUsername(String username);
-
-    UserDO getUserByPhone(String phone);
-
-    UserDO getUserByMail(String email);
-
-    int insertUserLog(UserLogDO log);
-
-    UserDO getUserByUserID(Long id);
-
-    List<UserDO> getUserList(UserQuery query);
-
-    void deleteUserById(Long id);
-
-    UserDO selectUserById(Long id);
-
-    int updateUser(UserDO user);
+@Data
+public class LoginLogQuery {
+    private Long id;
+    private Long adminId;
+    private String username;
+    private String ip;
+    private String userAgent;
+    private String gmtLogin;
 }

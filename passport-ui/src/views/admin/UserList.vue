@@ -178,6 +178,38 @@
                 <el-button type="primary" @click="addUser">确 定</el-button>
             </div>
         </el-dialog>
+
+        <el-dialog title="修改用户" :visible.sync="updateUserFromVisible">
+            <el-form :model="user">
+                <el-row>
+                    <el-col :span="12">
+                        <el-form-item label="用户昵称" :label-width="formLabelWidth">
+                            <el-input v-model="user.nickname" autocomplete="off">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item label="用户邮箱" :label-width="formLabelWidth">
+                            <el-input v-model="user.email" autocomplete="off"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="手机号码" :label-width="formLabelWidth">
+                            <el-input type="phone" v-model="user.phone" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="用户状态" v-model="user.enable" :label-width="formLabelWidth">
+                            <template>
+                                <el-radio v-model="redio" label="0">禁用</el-radio>
+                                <el-radio v-model="redio" label="1">启用</el-radio>
+                            </template>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="updateUserFromVisible = false">取 消</el-button>
+                <el-button type="primary" @click="updateUser">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -213,13 +245,35 @@
                     value: '1',
                     label: '启用'
                 }],
+                user: {
+                    nickname: null,
+                    phone: null,
+                    email: null,
+                    enable: null,
+                },
                 dialogFormVisible: false,
-                formLabelWidth: '120px'
+                formLabelWidth: '120px',
+                updateUserFromVisible: false,
+                redio: '0'
             }
         },
         methods: {
             handleEdit(id) {
-
+                this.updateUserFromVisible = true
+                let jwt = localStorage.getItem("jwt")
+                axios.create({'headers': {'Authorization': jwt}})
+                    .post("/" + id)
+                    .then(response => {
+                        let r = response.data
+                        this.redio = "" + r.data.enable + ''
+                        if (r.state == 0) {
+                            this.user = r.data;
+                        } else if (r.state == -1) {
+                            localStorage.clear();
+                        } else {
+                            this.$message.error("系统繁忙，请稍后再试")
+                        }
+                    })
             },
             handleDelete(id) {
                 let jwt = localStorage.getItem("jwt")
@@ -259,30 +313,28 @@
 
 
             },
-            handleChangeEnable(admin) {
+            handleChangeEnable(user) {
                 let enableText = ['禁用', '启用'];
-                let url = 'http://localhost:8080/user/' + admin.id;
-                if (admin.enable == 1) {
+                let url = 'http://localhost:8080/user/' + user.id;
+                if (user.enable == 1) {
                     url += '/enable';
                 } else {
                     url += '/disable';
                 }
-                console.log('url = ' + url);
-                // this.axios
-                //     .create({'headers': {'Authorization': localStorage.getItem('jwt')}})
-                //     .post(url).then((response) => {
-                //     let responseBody = response.data;
-                //     if (responseBody.state == 20000) {
-                //         let message = '将【' + admin.username + '】的账号状态改为【' + enableText[admin.enable] + '】成功';
-                //         console.log(message);
-                //         this.$message({
-                //             message: message,
-                //             type: 'success'
-                //         });
-                //     } else {
-                //         this.$message.error(responseBody.message);
-                //     }
-                // });
+
+                axios.create({'headers': {'Authorization': localStorage.getItem('jwt')}})
+                    .post(url).then((response) => {
+                    let responseBody = response.data;
+                    console.log(responseBody)
+                    if (responseBody.state == 0) {
+                        this.$message({
+                            message: responseBody.data,
+                            type: 'success'
+                        });
+                    } else {
+                        this.$message.error(responseBody.data);
+                    }
+                });
 
             },
             resetForm(formName) {
@@ -303,7 +355,7 @@
                     this.showEachState = true;
                 }
             },
-            addUser(){
+            addUser() {
                 this.dialogFormVisible = false
                 let jwt = localStorage.getItem("jwt")
                 axios.create({'headers': {'Authorization': jwt}})
@@ -320,6 +372,26 @@
                             this.userAdd.phone = null;
                             this.userAdd.email = null;
                             this.userAdd.enable = null;
+                        } else if (r.state == -1) {
+                            localStorage.clear();
+                        } else {
+                            this.$message.error("系统繁忙，请稍后再试")
+                        }
+                    })
+            },
+            updateUser() {
+                this.updateUserFromVisible = false
+                this.user.enable = parseInt(this.redio)
+                console.log(this.user)
+                let jwt = localStorage.getItem("jwt")
+                axios.create({'headers': {'Authorization': jwt}})
+                    .post("/update", this.user)
+                    .then(response => {
+                        let r = response.data
+                        console.log(r)
+                        if (r.state == 0) {
+                            this.$message.success(r.data)
+                            this.loadAdminList()
                         } else if (r.state == -1) {
                             localStorage.clear();
                         } else {

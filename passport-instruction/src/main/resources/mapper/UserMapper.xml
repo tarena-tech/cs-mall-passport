@@ -78,10 +78,10 @@
                 AND enable=#{enable}
             </if>
             <if test="gmtCreate!=null">
-                AND gmtCreate=#{gmtCreate}
+                AND gmt_create=#{gmtCreate}
             </if>
             <if test="gmtModified!=null">
-                AND gmtModified=#{gmtModified}
+                AND gmt_modified=#{gmtModified}
             </if>
             and is_delete =1
         </where>
@@ -90,5 +90,42 @@
     <delete id="deleteById">
         update cmp_admin set is_delete=0 where id=#{id}
     </delete>
+    <select id="selectUserById" resultMap="userDO">
+        SELECT
+        <include refid="userDO"/>
+        FROM cmp_admin
+        WHERE id=#{id}
+        and is_delete =1
+    </select>
+
+    <update id="updateUser" >
+        UPDATE
+        cmp_admin
+        <set>
+            <if test="username!=null">
+                username=#{username},
+            </if>
+            <if test="password!=null">
+                password=#{password},
+            </if>
+            <if test="nickname!=null">
+                nickname=#{nickname},
+            </if>
+            <if test="phone!=null">
+                phone=#{phone},
+            </if>
+            <if test="email!=null">
+                email=#{email},
+            </if>
+            <if test="enable!=null">
+                enable=#{enable},
+            </if>
+            <if test="gmtModified!=null">
+                gmt_modified=#{gmtModified}
+            </if>
+            where  is_delete =1 and id=#{id}
+
+        </set>
+    </update>
 
 </mapper>

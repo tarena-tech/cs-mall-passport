@@ -14,9 +14,22 @@
         <result column="user_agent" property="userAgent"/>
         <result column="gmt_login" property="gmtLogin"/>
     </resultMap>
+    <resultMap id="LoginLogQuery" type="com.tarena.passport.common.pojo.query.LoginLogQuery">
+        <id column="id" property="id"/>
+        <result column="admin_id" property="adminId"/>
+        <result column="username" property="username"/>
+        <result column="ip" property="ip"/>
+        <result column="user_agent" property="userAgent"/>
+        <result column="gmt_login" property="gmtLogin"/>
+    </resultMap>
     <insert id="insertUserLog" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO cmp_login_log (admin_id,username,nickname,ip,user_agent,gmt_login)
         VALUES (#{adminId},#{username},#{nickname},#{ip},#{userAgent},#{gmtLogin})
     </insert>
+    
+    <select id="getLoginLogList" resultMap="LoginLogQuery">
+        SELECT id,admin_id,username,ip,user_agent,gmt_login
+        FROM CMP_LOGIN_LOG
+    </select>
 
 </mapper>

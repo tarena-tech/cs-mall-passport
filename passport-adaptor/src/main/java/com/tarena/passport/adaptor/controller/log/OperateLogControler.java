@@ -15,35 +15,17 @@
  * limitations under the License.
  */
 
-package com.tarena.passport.doman.repository;
+package com.tarena.passport.adaptor.controller.log;
 
-import com.tarena.passport.common.pojo.model.UserDO;
-import com.tarena.passport.common.pojo.model.UserLogDO;
-import com.tarena.passport.common.pojo.param.UserParam;
-import com.tarena.passport.common.pojo.query.UserQuery;
+import com.tarena.passport.protocol.result.JsonResult;
 import java.util.List;
-import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Repository
-public interface UserRepository {
+@RequestMapping("/log/operate")
+@RestController
+public class OperateLogControler {
 
-    int addNewUser(UserDO userDO);
 
-    UserDO getUserByUsername(String username);
-
-    UserDO getUserByPhone(String phone);
-
-    UserDO getUserByMail(String email);
-
-    int insertUserLog(UserLogDO log);
-
-    UserDO getUserByUserID(Long id);
-
-    List<UserDO> getUserList(UserQuery query);
-
-    void deleteUserById(Long id);
-
-    UserDO selectUserById(Long id);
-
-    int updateUser(UserDO user);
 }

@@ -15,35 +15,24 @@
  * limitations under the License.
  */
 
-package com.tarena.passport.doman.repository;
+package com.tarena.passport.doman.service.impl;
 
-import com.tarena.passport.common.pojo.model.UserDO;
-import com.tarena.passport.common.pojo.model.UserLogDO;
-import com.tarena.passport.common.pojo.param.UserParam;
-import com.tarena.passport.common.pojo.query.UserQuery;
+import com.tarena.passport.common.pojo.query.LoginLogQuery;
+import com.tarena.passport.doman.repository.LoginLogRepository;
+import com.tarena.passport.doman.service.ILoginLogService;
 import java.util.List;
-import org.springframework.stereotype.Repository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-@Repository
-public interface UserRepository {
+@Service
+@Slf4j
+public class LoginLogServiceImpl implements ILoginLogService {
 
-    int addNewUser(UserDO userDO);
+    @Autowired private LoginLogRepository logServiceRepository;
 
-    UserDO getUserByUsername(String username);
-
-    UserDO getUserByPhone(String phone);
-
-    UserDO getUserByMail(String email);
-
-    int insertUserLog(UserLogDO log);
-
-    UserDO getUserByUserID(Long id);
-
-    List<UserDO> getUserList(UserQuery query);
-
-    void deleteUserById(Long id);
-
-    UserDO selectUserById(Long id);
-
-    int updateUser(UserDO user);
+    @Override public List<LoginLogQuery> getList() {
+        List<LoginLogQuery> list=logServiceRepository.getList();
+        return list;
+    }
 }

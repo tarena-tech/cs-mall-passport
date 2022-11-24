@@ -97,5 +97,31 @@ public class UserController{
     }
 
 
+    @PostMapping("/{id}")
+    public JsonResult selectUserById(@PathVariable  Long id) throws PassportBusinessException {
+        UserDO userDO=userService.selectUserById(id);
+        return JsonResult.ok(userDO);
+    }
+
+    @PostMapping("/update")
+    public JsonResult updateUser(@RequestBody UserParam user) throws PassportBusinessException {
+        userService.updateUser(user);
+        return JsonResult.ok();
+    }
+
+    @PostMapping("/{id:[0-9]+}/enable")
+    public JsonResult setEnable(@PathVariable Long id) throws PassportBusinessException {
+        userService.setEnable(id);
+        return JsonResult.ok("修改成功");
+    }
+
+
+    @PostMapping("/{id:[0-9]+}/disable")
+    public JsonResult setDisable(@PathVariable Long id) throws PassportBusinessException {
+        userService.setDisable(id);
+        return JsonResult.ok("修改成功");
+    }
+
+
 
 }

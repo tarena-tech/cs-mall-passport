@@ -18,6 +18,7 @@
 package com.tarena.passport.common.pojo.param;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,7 +29,8 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class UserParam  implements Serializable {
+public class
+UserParam  implements Serializable {
     @NotNull(message = "id禁止为空",groups = Check.Update.class)
     private Long id;
     @NotNull(message = "请输入用户名！",groups = Check.Create.class)
@@ -42,5 +44,6 @@ public class UserParam  implements Serializable {
     @NotNull(message = "邮箱！",groups = Check.Create.class)
     private String email;
     private Integer enable;
+
 
 }

@@ -19,6 +19,7 @@ package com.tarena.passport.instruction.mapper;
 
 import com.tarena.passport.common.pojo.model.UserDO;
 import com.tarena.passport.common.pojo.model.UserLogDO;
+import com.tarena.passport.common.pojo.param.UserParam;
 import com.tarena.passport.common.pojo.query.UserQuery;
 import java.util.List;
 
@@ -36,4 +37,8 @@ public interface UserMapper {
     List<UserDO> getUserList(UserQuery query);
 
     void deleteById(Long id);
+
+    UserDO selectUserById(Long id);
+
+    int updateUser(UserDO user);
 }

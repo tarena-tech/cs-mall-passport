@@ -144,4 +144,72 @@ public class UserServiceImpl implements IUserService {
         userRepository.deleteUserById(id);
 
     }
+
+    @Override public UserDO selectUserById(Long id) {
+        UserDO userDO=userRepository.selectUserById(id);
+        return userDO;
+    }
+
+    @Override public void updateUser(UserParam user) throws PassportBusinessException {
+        UserDO userDO = new UserDO();
+        BeanUtils.copyProperties(user,userDO);
+        userDO.setGmtModified(new Date());
+        int row=userRepository.updateUser(userDO);
+        if (row==0){
+            throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
+        }
+
+    }
+
+    @Override
+    public void setEnable(Long id) throws PassportBusinessException {
+
+        if (id == 1) {
+            throw new PassportBusinessException(ResultEnum.SYS_USER_NON_EXISTENT);
+        }
+
+        UserDO userDO = userRepository.selectUserById(id);
+
+        if (userDO == null) {
+            throw new PassportBusinessException(ResultEnum.SYS_USER_NON_EXISTENT);
+        }
+
+        if (userDO.getEnable() == 1) {
+
+            throw new  PassportBusinessException(ResultEnum.OK);
+        }
+
+        userDO.setEnable(1);
+        int rows = userRepository.updateUser(userDO);
+        if (rows != 1) {
+
+            throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
+        }
+    }
+
+    @Override
+    public void setDisable(Long id) throws PassportBusinessException {
+        log.debug("开始处理【禁用管理员账号】的业务：id={}", id);
+        if (id == 1) {
+            throw new PassportBusinessException(ResultEnum.SYS_USER_NON_EXISTENT);
+        }
+
+        UserDO userDO = userRepository.selectUserById(id);
+
+        if (userDO == null) {
+            throw new PassportBusinessException(ResultEnum.SYS_USER_NON_EXISTENT);
+        }
+
+        if (userDO.getEnable() == 0) {
+
+            throw new PassportBusinessException(ResultEnum.OK);
+        }
+
+        userDO.setEnable(0);
+        int rows = userRepository.updateUser(userDO);
+        if (rows != 1) {
+
+            throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
+        }
+    }
 }

@@ -18,9 +18,13 @@
 package com.tarena.passport.instruction.mapper;
 
 import com.tarena.passport.common.pojo.model.UserLogDO;
+import com.tarena.passport.common.pojo.query.LoginLogQuery;
+import java.util.List;
 
 public interface UserLogMapper {
 
     int insertUserLog(UserLogDO log);
+
+    List<LoginLogQuery> getLoginLogList();
 
 }

@@ -37,6 +37,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         response.setHeader("Access-Control-Expose-Headers", "*");
 
         if (request.getMethod().equals("OPTIONS")) {
+            response.setStatus(HttpStatus.OK.value());
             return;
         }
 

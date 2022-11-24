@@ -19,6 +19,7 @@ package com.tarena.passport.instruction.repository;
 
 import com.tarena.passport.common.pojo.model.UserDO;
 import com.tarena.passport.common.pojo.model.UserLogDO;
+import com.tarena.passport.common.pojo.param.UserParam;
 import com.tarena.passport.common.pojo.query.UserQuery;
 import com.tarena.passport.doman.repository.UserRepository;
 import com.tarena.passport.instruction.mapper.UserLogMapper;
@@ -67,6 +68,14 @@ public class UserRepositry implements UserRepository {
 
     @Override public void deleteUserById(Long id) {
         userMapper.deleteById(id);
+    }
+
+    @Override public UserDO selectUserById(Long id) {
+        return userMapper.selectUserById(id);
+    }
+
+    @Override public int updateUser(UserDO user) {
+        return  userMapper.updateUser(user);
     }
 
 }
