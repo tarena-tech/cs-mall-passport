@@ -23,4 +23,6 @@ import java.util.List;
 public interface ILoginLogService {
 
     List<LoginLogQuery> getList(LoginLogQuery logQuery);
+
+    void deleteById(Long id);
 }

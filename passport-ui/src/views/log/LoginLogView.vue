@@ -27,13 +27,13 @@
                     </el-form-item>
                     <el-form-item style="margin-left: 1%">
                         <el-button type="primary" @click="loadLoginLogList">查询</el-button>
-                        <el-button @click="">重置</el-button>
+                        <el-button @click="resetForm">重置</el-button>
                     </el-form-item>
                 </el-form>
                 <el-row style="margin-bottom: 10px">
                     <el-button type="danger" plain size="mini">导出数据</el-button>
                     <el-button icon="el-icon-refresh" circle size="mini" style="float: right"
-                               @click=""></el-button>
+                               @click="loadLoginLogList"></el-button>
                     <el-button icon="el-icon-search" circle size="mini" style="float: right"
                                @click="showEach"></el-button>
                 </el-row>
@@ -157,11 +157,26 @@
 
             },
             handleDelete(id) {
-
-
+                console.log(id)
+                let jwt = localStorage.getItem("jwt")
+                axios.create({'headers': {'Authorization': jwt}})
+                    .post("http://localhost:8080/log/login/delete/"+id,this.LoginQuery)
+                    .then(response => {
+                        let r = response.data
+                        if (r.state == 0) {
+                            this.$message.error("删除成功")
+                        } else if (r.state == -1) {
+                            localStorage.clear();
+                            this.$message.error("登录失效，请重新登录")
+                        } else {
+                            this.$message.error("系统繁忙，请稍后再试")
+                        }
+                    })
+            },
+            resetForm(){
+                this.LoginQuery.username=null
             }
-        }
-        ,
+        },
         created() {
             this.loadLoginLogList();
 

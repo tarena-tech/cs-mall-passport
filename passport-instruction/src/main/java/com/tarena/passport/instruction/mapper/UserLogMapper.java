@@ -32,4 +32,6 @@ public interface UserLogMapper {
     int insertOperateLog(UserOperateParam param);
 
     List<OperateDetailDO> getList();
+
+    int deleteById(Long id);
 }

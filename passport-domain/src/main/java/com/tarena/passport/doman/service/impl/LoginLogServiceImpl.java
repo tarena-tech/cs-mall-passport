@@ -35,4 +35,8 @@ public class LoginLogServiceImpl implements ILoginLogService {
         List<LoginLogQuery> list=logServiceRepository.getList(logQuery);
         return list;
     }
+
+    @Override public void deleteById(Long id) {
+        logServiceRepository.deleteById(id);
+    }
 }

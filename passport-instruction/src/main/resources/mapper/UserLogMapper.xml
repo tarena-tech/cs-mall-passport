@@ -51,7 +51,7 @@
             <if test=" state !=null">
                 AND cpmd.state=#{state}
             </if>
-            and cpm.id=cpmd.login_id order by id desc
+            and cpm.id=cpmd.login_id  and is_delete !=1 order by id desc
         </where>
 
     </select>
@@ -69,5 +69,9 @@
         INNER JOIN  cmp_admin ca on cold.admin_id=ca.id
         order by id desc
     </select>
+
+    <delete id="deleteById">
+        update CMP_LOGIN_LOG_DETAIL  set is_delete=1  where login_id=#{id}
+    </delete>
 
 </mapper>

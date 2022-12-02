@@ -35,4 +35,8 @@ public class LoginLogRepositoryImpl implements LoginLogRepository {
         return userLogMapper.getLoginLogList(logQuery);
 
     }
+
+    @Override public int deleteById(Long id) {
+        return userLogMapper.deleteById(id);
+    }
 }
