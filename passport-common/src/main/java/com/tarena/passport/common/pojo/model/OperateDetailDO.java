@@ -15,11 +15,19 @@
  * limitations under the License.
  */
 
-package com.tarena.passport.doman.repository;
+package com.tarena.passport.common.pojo.model;
 
-import com.tarena.passport.common.pojo.query.LoginLogQuery;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.LocalDateTime;
+import lombok.Data;
 
-public interface LoginLogRepository {
-    List<LoginLogQuery> getList(LoginLogQuery logQuery);
+@Data
+public class OperateDetailDO {
+    private Long id;
+    private String username;
+    private Integer state;
+    private String detail;
+    private String gmtOperate;
+    private String requestParameter;
+    private String operateMethod;
 }

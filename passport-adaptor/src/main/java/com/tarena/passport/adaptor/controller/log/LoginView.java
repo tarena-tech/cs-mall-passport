@@ -10,6 +10,8 @@ public class LoginView {
     private String username;
     private String ip;
     private String userAgent;
+    private Integer state;
+    private String detail;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private String gmtLogin;
 

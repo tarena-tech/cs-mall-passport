@@ -15,11 +15,22 @@
  * limitations under the License.
  */
 
-package com.tarena.passport.doman.repository;
+package com.tarena.passport.doman.service.impl;
 
-import com.tarena.passport.common.pojo.query.LoginLogQuery;
+import com.tarena.passport.common.pojo.model.OperateDetailDO;
+import com.tarena.passport.doman.repository.OperateLogRepository;
+import com.tarena.passport.doman.service.IOperateLogService;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public interface LoginLogRepository {
-    List<LoginLogQuery> getList(LoginLogQuery logQuery);
+@Service
+public class OperateLogServiceImpl implements IOperateLogService {
+
+    @Autowired
+    private OperateLogRepository operateLogRepository;
+
+    @Override public List<OperateDetailDO> getList() {
+        return operateLogRepository.getList();
+    }
 }

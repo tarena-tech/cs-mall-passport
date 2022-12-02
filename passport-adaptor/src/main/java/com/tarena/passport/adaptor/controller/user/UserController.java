@@ -27,6 +27,7 @@ import com.tarena.passport.common.pojo.param.Check;
 import com.tarena.passport.common.pojo.query.UserQuery;
 import com.tarena.passport.doman.service.IUserService;
 import com.tarena.passport.protocol.PassportBusinessException;
+import com.tarena.passport.protocol.result.JsonPage;
 import com.tarena.passport.protocol.result.JsonResult;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -50,9 +50,9 @@ public class UserController{
     private IUserService userService;
 
     @PostMapping("/add-user")
-    public JsonResult<String> addNewUser(@Validated(Check.Create.class) @RequestBody UserParam userParam) throws PassportBusinessException {
+    public JsonResult<String> addNewUser(@Validated(Check.Create.class) @RequestBody UserParam userParam, HttpServletRequest request) throws PassportBusinessException {
 
-        userService.addNewUser(userParam);
+        userService.addNewUser(userParam,request);
         return JsonResult.ok("添加成功");
     }
 
@@ -61,64 +61,59 @@ public class UserController{
         String address = IPUtils.getIpAddress(request);
         String browserName = AgentUtils.getLoginAgent(request);
         UserAddressAndBrowserNameParam param = new UserAddressAndBrowserNameParam(address,browserName);
-        String token=userService.login(userLoginParam,param);
+        String token=userService.login(userLoginParam,param,request);
         return JsonResult.ok(token);
     }
 
     @GetMapping("/user-details")
     public JsonResult<UserView> userDetails(HttpServletRequest request) throws PassportBusinessException {
-        String jwt = request.getHeader("Authorization");
-        UserDO userDO = userService.getUserDetails(jwt);
+        UserDO userDO = userService.getUserDetails(request);
         UserView userView = new UserView();
         BeanUtils.copyProperties(userDO,userView);
         userView.setPassword("{protected}");
         return JsonResult.ok(userView);
     }
 
-    @PostMapping("/user-list")
-    public JsonResult<List<UserView>> userList(@RequestBody UserQuery userQuery) throws PassportBusinessException {
-        System.out.println(userQuery);
-        List<UserDO> list = userService.getUserList(userQuery);
-        ArrayList<UserView> userViews = new ArrayList<>();
-        UserView view;
-        for (UserDO userDO:list){
-            view = new UserView();
-            BeanUtils.copyProperties(userDO,view);
-            userViews.add(view);
-        }
+    @PostMapping("/user-list/{page}/{pageSize}")
+    public JsonResult<JsonPage<UserView>> userList(@RequestBody UserQuery userQuery, HttpServletRequest  request,@PathVariable Integer page,@PathVariable Integer pageSize) throws PassportBusinessException {
 
-        return JsonResult.ok(userViews);
+        System.out.println("page = " + page);
+        System.out.println("pageSize = " + pageSize);
+        JsonPage<UserDO> userDOList = userService.getUserList(userQuery, request, page, pageSize);
+        JsonPage<UserView> jsonPage = new JsonPage<>();
+        BeanUtils.copyProperties(userDOList,jsonPage);
+        return JsonResult.ok(jsonPage);
     }
 
     @PostMapping("/deleteById/{id}")
-    public JsonResult deleteUserById(@PathVariable  Long id) throws PassportBusinessException {
-        userService.deleteUserById(id);
+    public JsonResult deleteUserById(@PathVariable  Long id, HttpServletRequest request) throws PassportBusinessException {
+        userService.deleteUserById(id,request);
         return JsonResult.ok("删除成功");
     }
 
 
     @PostMapping("/{id}")
-    public JsonResult selectUserById(@PathVariable  Long id) throws PassportBusinessException {
-        UserDO userDO=userService.selectUserById(id);
+    public JsonResult selectUserById(@PathVariable  Long id, HttpServletRequest request) throws PassportBusinessException {
+        UserDO userDO=userService.selectUserById(id,request);
         return JsonResult.ok(userDO);
     }
 
     @PostMapping("/update")
-    public JsonResult updateUser(@RequestBody UserParam user) throws PassportBusinessException {
-        userService.updateUser(user);
+    public JsonResult updateUser(@RequestBody UserParam user, HttpServletRequest request) throws PassportBusinessException {
+        userService.updateUser(user,request);
         return JsonResult.ok();
     }
 
     @PostMapping("/{id:[0-9]+}/enable")
-    public JsonResult setEnable(@PathVariable Long id) throws PassportBusinessException {
-        userService.setEnable(id);
+    public JsonResult setEnable(@PathVariable Long id, HttpServletRequest request) throws PassportBusinessException {
+        userService.setEnable(id,request);
         return JsonResult.ok("修改成功");
     }
 
 
     @PostMapping("/{id:[0-9]+}/disable")
-    public JsonResult setDisable(@PathVariable Long id) throws PassportBusinessException {
-        userService.setDisable(id);
+    public JsonResult setDisable(@PathVariable Long id, HttpServletRequest request) throws PassportBusinessException {
+        userService.setDisable(id,request);
         return JsonResult.ok("修改成功");
     }
 

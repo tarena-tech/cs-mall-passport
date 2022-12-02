@@ -13,6 +13,14 @@ const routes = [
       {
         path: '/user-list',
         component: () => import('../views/admin/UserList.vue')
+      },
+      {
+        path: '/user-login-log',
+        component: () => import('../views/log/LoginLogView')
+      },
+      {
+        path: '/user-operate-log',
+        component: () => import('../views/log/OperateLogView')
       }
     ]
   },

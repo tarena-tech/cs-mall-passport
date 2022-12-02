@@ -26,5 +26,8 @@ public class LoginLogQuery {
     private String username;
     private String ip;
     private String userAgent;
+    private Integer state;
+    private String detail;
+    private Integer enable;
     private String gmtLogin;
 }

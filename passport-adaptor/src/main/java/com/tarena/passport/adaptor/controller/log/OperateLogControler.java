@@ -17,15 +17,39 @@
 
 package com.tarena.passport.adaptor.controller.log;
 
+import com.tarena.passport.common.pojo.model.OperateDetailDO;
+import com.tarena.passport.doman.service.IOperateLogService;
 import com.tarena.passport.protocol.result.JsonResult;
+import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/log/operate")
 @RestController
 public class OperateLogControler {
+
+    @Autowired
+    private IOperateLogService operateLogService;
+
+
+    @PostMapping("/list")
+    public JsonResult<List<OperateView>> getList(HttpServletRequest request){
+        List<OperateDetailDO> list = operateLogService.getList();
+        List<OperateView> operateViews = new ArrayList<>();
+        for (OperateDetailDO operateDetail : list) {
+            OperateView operateView = new OperateView();
+            BeanUtils.copyProperties(operateDetail,operateView);
+            operateViews.add(operateView);
+        }
+        return JsonResult.ok(operateViews);
+
+    }
 
 
 }

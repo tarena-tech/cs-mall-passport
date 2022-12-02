@@ -15,11 +15,24 @@
  * limitations under the License.
  */
 
-package com.tarena.passport.doman.repository;
+package com.tarena.passport.protocol.enums;
 
-import com.tarena.passport.common.pojo.query.LoginLogQuery;
-import java.util.List;
+import lombok.Getter;
 
-public interface LoginLogRepository {
-    List<LoginLogQuery> getList(LoginLogQuery logQuery);
+@Getter
+public enum LogEnum {
+
+
+    USER_PASSPORD_ERROR("密码错误"),
+    USER_NOTFOUND_ERROR("用户不存在"),
+    SYS_USER_DISABLE("用户已被禁用"),
+
+    SYSTEM_ERROR( "系统错误");
+
+    LogEnum(String message) {
+        this.message = message;
+    }
+
+
+    private String message;
 }

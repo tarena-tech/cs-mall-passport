@@ -29,8 +29,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class
-UserParam  implements Serializable {
+public class UserParam  implements Serializable {
     @NotNull(message = "id禁止为空",groups = Check.Update.class)
     private Long id;
     @NotNull(message = "请输入用户名！",groups = Check.Create.class)

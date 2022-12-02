@@ -15,21 +15,28 @@
  * limitations under the License.
  */
 
-package com.tarena.passport.instruction.mapper;
+package com.tarena.passport.instruction.repository;
 
 import com.tarena.passport.common.pojo.model.OperateDetailDO;
-import com.tarena.passport.common.pojo.model.UserLogDO;
 import com.tarena.passport.common.pojo.param.UserOperateParam;
-import com.tarena.passport.common.pojo.query.LoginLogQuery;
+import com.tarena.passport.doman.repository.OperateLogRepository;
+import com.tarena.passport.instruction.mapper.UserLogMapper;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-public interface UserLogMapper {
+@Repository
+public class OperateLogRepositoryImpl implements OperateLogRepository {
 
-    int insertUserLog(UserLogDO log);
+    @Autowired
+    private UserLogMapper userLogMapper;
 
-    List<LoginLogQuery> getLoginLogList(LoginLogQuery logQuery);
+    @Override public int insertOperateLog(UserOperateParam userOperateParam) {
+        return userLogMapper.insertOperateLog(userOperateParam);
+    }
 
-    int insertOperateLog(UserOperateParam param);
-
-    List<OperateDetailDO> getList();
+    @Override public List<OperateDetailDO> getList() {
+        return userLogMapper.getList();
+    }
 }

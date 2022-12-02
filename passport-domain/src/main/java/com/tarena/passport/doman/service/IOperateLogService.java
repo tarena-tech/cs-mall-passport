@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package com.tarena.passport.doman.repository;
+package com.tarena.passport.doman.service;
 
-import com.tarena.passport.common.pojo.query.LoginLogQuery;
+import com.tarena.passport.common.pojo.model.OperateDetailDO;
 import java.util.List;
 
-public interface LoginLogRepository {
-    List<LoginLogQuery> getList(LoginLogQuery logQuery);
+public interface IOperateLogService {
+    List<OperateDetailDO> getList();
 }

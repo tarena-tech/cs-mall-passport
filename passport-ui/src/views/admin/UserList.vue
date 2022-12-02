@@ -45,13 +45,12 @@
                     <!--                </el-date-picker>-->
                     <!--            </el-form-item>-->
                     <el-form-item style="margin-left: 1%">
-                        <el-button type="primary" @click="loadAdminList">查询</el-button>
+                        <el-button type="primary" @click="loadAdminList(null,null)">查询</el-button>
                         <el-button @click="resetForm('userQuery')">重置</el-button>
                     </el-form-item>
                 </el-form>
                 <el-row style="margin-bottom: 10px">
                     <el-button type="primary" plain size="mini" @click="dialogFormVisible = true">添加用户</el-button>
-                    <el-button type="success" plain size="mini">导入数据</el-button>
                     <el-button type="danger" plain size="mini">导出数据</el-button>
                     <el-button icon="el-icon-refresh" circle size="mini" style="float: right"
                                @click="loadAdminList"></el-button>
@@ -131,10 +130,14 @@
             </el-main>
             <el-footer class="footer">
                 <el-pagination
-                        style="position: absolute;bottom: 5%;right: 30%"
                         layout="prev, pager, next"
-                        :total="50">
+                        :total="pageInfo.total"
+                        :page-size="pageInfo.pageSize"
+                        :current-page="pageInfo.page"
+                        @current-change="changePage"
+                        :page-count="pageInfo.totalPage">
                 </el-pagination>
+<!--                style="position: absolute;bottom: 5%;right: 30%"-->
             </el-footer>
         </el-container>
         <el-dialog title="新增用户" :visible.sync="dialogFormVisible">
@@ -254,7 +257,8 @@
                 dialogFormVisible: false,
                 formLabelWidth: '120px',
                 updateUserFromVisible: false,
-                redio: '0'
+                redio: '0',
+                pageInfo:{}
             }
         },
         methods: {
@@ -293,17 +297,29 @@
                         }
                     })
             },
-            loadAdminList() {
-                console.log(this.userQuery)
+            loadAdminList(page,pageSize) {
                 let jwt = localStorage.getItem("jwt")
+                if (page==null){
+                    page=1
+
+                }
+                if (pageSize==null){
+                    pageSize=8
+                }
+
+                if (this.showEachState == true){
+                    pageSize=6
+                }
                 axios.create({'headers': {'Authorization': jwt}})
-                    .post("/user-list", this.userQuery)
+                    .post("/user-list/"+page+"/"+pageSize, this.userQuery)
                     .then(response => {
                         let r = response.data
-
                         console.log(r)
                         if (r.state == 0) {
-                            this.tableData = r.data
+                            this.pageInfo=r.data;
+                            console.log("this.pageInfo")
+                            console.log( this.pageInfo)
+                            this.tableData = this.pageInfo.list
                         } else if (r.state == -1) {
                             localStorage.clear();
                         } else {
@@ -332,7 +348,7 @@
                             type: 'success'
                         });
                     } else {
-                        this.$message.error(responseBody.data);
+                        this.$message.error(responseBody.message);
                     }
                 });
 
@@ -354,6 +370,7 @@
                 } else {
                     this.showEachState = true;
                 }
+                this.loadAdminList(null,null)
             },
             addUser() {
                 this.dialogFormVisible = false
@@ -362,9 +379,9 @@
                     .post("/add-user", this.userAdd)
                     .then(response => {
                         let r = response.data
-
+                        console.log(r.message)
                         if (r.state == 0) {
-                            this.$message.success(r.message)
+                            this.$message.success(r.data)
                             this.loadAdminList()
                             this.userAdd.username = null;
                             this.userAdd.nickname = null;
@@ -375,7 +392,7 @@
                         } else if (r.state == -1) {
                             localStorage.clear();
                         } else {
-                            this.$message.error("系统繁忙，请稍后再试")
+                            this.$message.error(r.message)
                         }
                     })
             },
@@ -390,7 +407,7 @@
                         let r = response.data
                         console.log(r)
                         if (r.state == 0) {
-                            this.$message.success(r.data)
+                            this.$message.success("修改成功")
                             this.loadAdminList()
                         } else if (r.state == -1) {
                             localStorage.clear();
@@ -398,6 +415,10 @@
                             this.$message.error("系统繁忙，请稍后再试")
                         }
                     })
+            },
+            changePage(a){
+                this.pageInfo.page=a;
+                this.loadAdminList(a,null)
             }
         },
         created() {

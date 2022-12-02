@@ -15,37 +15,28 @@
  * limitations under the License.
  */
 
-package com.tarena.passport.instruction.mapper;
+package com.tarena.passport.doman.utils;
 
-import com.tarena.passport.common.pojo.model.LogDetailDO;
-import com.tarena.passport.common.pojo.model.OperateDetailDO;
+import com.alibaba.fastjson.JSON;
 import com.tarena.passport.common.pojo.model.UserDO;
-import com.tarena.passport.common.pojo.model.UserLogDO;
+import com.tarena.passport.common.pojo.param.UserOperateParam;
 import com.tarena.passport.common.pojo.param.UserParam;
-import com.tarena.passport.common.pojo.query.UserQuery;
-import java.util.List;
+import java.time.LocalDateTime;
+import javax.servlet.http.HttpServletRequest;
 
-public interface UserMapper {
+public class OperateDetail {
 
-    int addNewUser(UserDO userDO);
+    public static<T> UserOperateParam KeepOperateDetail(UserDO userDO,T t, HttpServletRequest request,String operateMethod){
+        UserOperateParam param = new UserOperateParam();
+        if  (t instanceof UserDO )  ((UserDO) t).setPassword("{protected}");
+        if  (t instanceof UserParam) ((UserParam) t).setPassword("{protected}");
+        param.setAdminId(userDO.getId())
+            .setRequestParameter(JSON.toJSON(t).toString())
+            .setGmtOperate(LocalDateTime.now())
+            .setState(1)
+            .setDetail(LogDetail.getLogDetail(request))
+            .setOperateMethod(operateMethod);
 
-    UserDO getUserByUserName(String username);
-
-    UserDO getUserByPhone(String phone);
-
-    UserDO getUserByMail(String mail);
-
-    UserDO getUserByUserID(Long id);
-
-    List<UserDO> getUserList(UserQuery query);
-
-    void deleteById(Long id);
-
-    UserDO selectUserById(Long id);
-
-    int updateUser(UserDO user);
-
-    int insertUserLogDetail(LogDetailDO detail);
-
-
+        return param;
+    }
 }

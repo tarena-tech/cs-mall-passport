@@ -17,9 +17,14 @@
 
 package com.tarena.passport.doman.repository;
 
-import com.tarena.passport.common.pojo.query.LoginLogQuery;
+import com.tarena.passport.common.pojo.model.OperateDetailDO;
+import com.tarena.passport.common.pojo.param.UserOperateParam;
 import java.util.List;
 
-public interface LoginLogRepository {
-    List<LoginLogQuery> getList(LoginLogQuery logQuery);
+public interface OperateLogRepository{
+
+    int insertOperateLog(UserOperateParam userOperateParam);
+
+    List<OperateDetailDO> getList();
+
 }

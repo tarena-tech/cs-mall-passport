@@ -35,6 +35,7 @@
         <nimbus-jose-jwt.version>9.23</nimbus-jose-jwt.version>
         <guava.version>30.1.1-jre</guava.version>
         <commons-codec.version>1.15</commons-codec.version>
+        <pagehelper-spring-boot.version>1.4.0</pagehelper-spring-boot.version>
     </properties>
 
 
@@ -89,6 +90,11 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>1.2.45</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper-spring-boot.version}</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>

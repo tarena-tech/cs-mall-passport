@@ -17,6 +17,7 @@
 
 package com.tarena.passport.instruction.repository;
 
+
 import com.tarena.passport.common.pojo.query.LoginLogQuery;
 import com.tarena.passport.doman.repository.LoginLogRepository;
 import com.tarena.passport.instruction.mapper.UserLogMapper;
@@ -30,7 +31,8 @@ public class LoginLogRepositoryImpl implements LoginLogRepository {
     @Autowired
     private UserLogMapper userLogMapper;
 
-    @Override public List<LoginLogQuery> getList() {
-        return userLogMapper.getLoginLogList();
+    @Override public List<LoginLogQuery> getList(LoginLogQuery logQuery) {
+        return userLogMapper.getLoginLogList(logQuery);
+
     }
 }

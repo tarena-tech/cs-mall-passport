@@ -17,6 +17,7 @@
 
 package com.tarena.passport.instruction.repository;
 
+import com.tarena.passport.common.pojo.model.LogDetailDO;
 import com.tarena.passport.common.pojo.model.UserDO;
 import com.tarena.passport.common.pojo.model.UserLogDO;
 import com.tarena.passport.common.pojo.param.UserParam;
@@ -76,6 +77,10 @@ public class UserRepositry implements UserRepository {
 
     @Override public int updateUser(UserDO user) {
         return  userMapper.updateUser(user);
+    }
+
+    @Override public int insertUserLogDetail(LogDetailDO detail) {
+        return userMapper.insertUserLogDetail(detail);
     }
 
 }

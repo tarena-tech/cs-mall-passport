@@ -128,4 +128,10 @@
         </set>
     </update>
 
+    <insert id="insertUserLogDetail" keyProperty="id" useGeneratedKeys="true">
+         INSERT INTO cmp_login_log_detail
+                     (login_id,state,detail)
+            VALUES (#{loginId},#{state},#{detail})
+    </insert>
+
 </mapper>

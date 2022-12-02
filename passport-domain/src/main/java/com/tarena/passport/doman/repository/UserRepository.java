@@ -17,6 +17,7 @@
 
 package com.tarena.passport.doman.repository;
 
+import com.tarena.passport.common.pojo.model.LogDetailDO;
 import com.tarena.passport.common.pojo.model.UserDO;
 import com.tarena.passport.common.pojo.model.UserLogDO;
 import com.tarena.passport.common.pojo.param.UserParam;
@@ -46,4 +47,6 @@ public interface UserRepository {
     UserDO selectUserById(Long id);
 
     int updateUser(UserDO user);
+
+    int insertUserLogDetail(LogDetailDO detail);
 }

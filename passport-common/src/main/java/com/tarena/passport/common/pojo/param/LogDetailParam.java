@@ -15,11 +15,15 @@
  * limitations under the License.
  */
 
-package com.tarena.passport.doman.repository;
+package com.tarena.passport.common.pojo.param;
 
-import com.tarena.passport.common.pojo.query.LoginLogQuery;
-import java.util.List;
+import lombok.Data;
 
-public interface LoginLogRepository {
-    List<LoginLogQuery> getList(LoginLogQuery logQuery);
+@Data
+public class LogDetailParam {
+
+    private String LoginId;
+    private String state;
+    private String detail;
+    
 }

@@ -24,7 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,9 +36,10 @@ public class LoginLogControler {
     @Autowired
     private ILoginLogService loginLogService;
 
-    @GetMapping("/list")
-    public JsonResult<List<LoginView>> getAll(){
-        List<LoginLogQuery> list = loginLogService.getList();
+    @PostMapping("/list")
+    public JsonResult<List<LoginView>> getAll(@RequestBody LoginLogQuery logQuery){
+        System.out.println("logQuery = " + logQuery);
+        List<LoginLogQuery> list = loginLogService.getList(logQuery);
         ArrayList<LoginView> views = new ArrayList<>();
         for (LoginLogQuery query : list) {
             LoginView loginView = new LoginView();
@@ -45,5 +47,6 @@ public class LoginLogControler {
             views.add(loginView);
         }
         return JsonResult.ok(views);
+
     }
 }

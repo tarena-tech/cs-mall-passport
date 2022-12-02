@@ -5,6 +5,7 @@
     <sql id="UserLog">
         username,password,nickname,phone,email,enable,gmt_create,gmt_modified
     </sql>
+
     <resultMap id="UserLog" type="com.tarena.passport.common.pojo.model.UserLogDO">
         <id column="id" property="id"/>
         <result column="admin_id" property="adminId"/>
@@ -20,16 +21,53 @@
         <result column="username" property="username"/>
         <result column="ip" property="ip"/>
         <result column="user_agent" property="userAgent"/>
+        <result column="state" property="state"/>
+        <result column="detail" property="detail"/>
         <result column="gmt_login" property="gmtLogin"/>
     </resultMap>
+    <resultMap id="OperateLogDO" type="com.tarena.passport.common.pojo.model.OperateDetailDO">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="state" property="state"/>
+        <result column="detail" property="detail"/>
+        <result column="gmt_operate" property="gmtOperate"/>
+        <result column="request_parameter" property="requestParameter"/>
+        <result column="operate_method" property="operateMethod"/>
+    </resultMap>
+
     <insert id="insertUserLog" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO cmp_login_log (admin_id,username,nickname,ip,user_agent,gmt_login)
         VALUES (#{adminId},#{username},#{nickname},#{ip},#{userAgent},#{gmtLogin})
     </insert>
-    
+
     <select id="getLoginLogList" resultMap="LoginLogQuery">
-        SELECT id,admin_id,username,ip,user_agent,gmt_login
-        FROM CMP_LOGIN_LOG
+        SELECT cpm.id,cpm.admin_id,cpm.username,cpm.ip,cpm.user_agent,cpmd.state,cpmd.detail,cpm.gmt_login
+        FROM CMP_LOGIN_LOG_DETAIL cpmd join  CMP_LOGIN_LOG cpm
+        <where>
+            <if test="username!=null">
+                AND username like #{username}"%"
+            </if>
+
+            <if test=" state !=null">
+                AND cpmd.state=#{state}
+            </if>
+            and cpm.id=cpmd.login_id order by id desc
+        </where>
+
+    </select>
+
+    <insert id="insertOperateLog" useGeneratedKeys="true" keyProperty="id">
+       insert INTO cmp_operate_log_detail (admin_id,state,detail,gmt_operate,request_parameter,operate_method)
+       values (#{adminId},#{state},#{detail},#{gmtOperate},#{requestParameter},#{operateMethod})
+
+    </insert>
+
+    <select id="getList" resultMap="OperateLogDO">
+        select  cold.id ,ca.username,cold.state,cold.detail,cold.gmt_operate,
+        cold.operate_method ,cold.request_parameter from
+        cmp_operate_log_detail cold
+        INNER JOIN  cmp_admin ca on cold.admin_id=ca.id
+        order by id desc
     </select>
 
 </mapper>

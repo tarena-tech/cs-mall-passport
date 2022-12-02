@@ -22,5 +22,5 @@ import java.util.List;
 
 public interface ILoginLogService {
 
-    List<LoginLogQuery> getList();
+    List<LoginLogQuery> getList(LoginLogQuery logQuery);
 }

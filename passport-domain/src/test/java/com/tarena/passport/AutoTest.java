@@ -36,4 +36,5 @@ public class AutoTest {
         System.out.println("获得用户信息id:"+token.getId()+";用时["+(end-start)+"]毫秒");
     }
 
+
 }
