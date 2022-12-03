@@ -10,13 +10,13 @@
                 </el-breadcrumb>
             </el-header>
             <el-main>
-                <el-form :inline="true" :model="LoginQuery" ref="userQuery" class="demo-form-inline"
+                <el-form :inline="true" :model="operateQuery" ref="userQuery" class="demo-form-inline"
                          v-show="showEachState">
                     <el-form-item label="用户名称">
-                        <el-input v-model="LoginQuery.username" placeholder="用户名称"></el-input>
+                        <el-input v-model="operateQuery.username" placeholder="用户名称"></el-input>
                     </el-form-item>
                     <el-form-item label="用户状态">
-                        <el-select v-model="LoginQuery.enable" placeholder="请选择">
+                        <el-select v-model="operateQuery.state" placeholder="请选择">
                             <el-option
                                     v-for="item in options"
                                     :key="item.value"
@@ -26,7 +26,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item style="margin-left: 1%">
-                        <el-button type="primary" @click="">查询</el-button>
+                        <el-button type="primary" @click="operateQueryLogList">查询</el-button>
                         <el-button @click="">重置</el-button>
                     </el-form-item>
                 </el-form>
@@ -112,9 +112,9 @@
             return {
                 showEachState: true,
                 tableData: [],
-                LoginQuery: {
+                operateQuery: {
                     username: '',
-                    enable: ''
+                    state: null
                 },
 
                 options: [{
@@ -138,11 +138,12 @@
                     this.showEachState = true;
                 }
             },
-            loadLoginLogList() {
+            operateQueryLogList() {
                 let jwt = localStorage.getItem("jwt")
                 axios.create({'headers': {'Authorization': jwt}})
-                    .post("http://localhost:8080/log/operate/list")
+                    .post("http://localhost:8080/log/operate/list",this.operateQuery)
                     .then(response => {
+                        console.log(this.operateQuery)
                         let r = response.data
                         console.log(r)
                         if (r.state == 0) {
@@ -156,13 +157,31 @@
 
             },
             handleDelete(id) {
+                let jwt = localStorage.getItem("jwt")
+                axios.create({'headers': {'Authorization': jwt}})
+                    .post("http://localhost:8080/log/operate/delete/"+id,this.LoginQuery)
+                    .then(response => {
+                        let r = response.data
+                        if (r.state == 0) {
+                            this.$message.error("删除成功")
+                            this.operateQueryLogList()
+                        } else if (r.state == -1) {
+                            localStorage.clear();
+                            this.$message.error("登录失效，请重新登录")
+                        } else {
+                            this.$message.error("系统繁忙，请稍后再试")
+                        }
+                    })
 
-
+            },
+            resetForm(){
+                this.operateQuery.username=null
+                this.operateQuery.state=null
             }
         }
         ,
         created() {
-            this.loadLoginLogList();
+            this.operateQueryLogList();
 
         }
     }

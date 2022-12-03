@@ -19,11 +19,11 @@ package com.tarena.passport.instruction.repository;
 
 import com.tarena.passport.common.pojo.model.OperateDetailDO;
 import com.tarena.passport.common.pojo.param.UserOperateParam;
+import com.tarena.passport.common.pojo.query.UserOperateQuery;
 import com.tarena.passport.doman.repository.OperateLogRepository;
 import com.tarena.passport.instruction.mapper.UserLogMapper;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -36,7 +36,15 @@ public class OperateLogRepositoryImpl implements OperateLogRepository {
         return userLogMapper.insertOperateLog(userOperateParam);
     }
 
-    @Override public List<OperateDetailDO> getList() {
-        return userLogMapper.getList();
+    @Override public List<OperateDetailDO> getList(UserOperateQuery userOperateQuery) {
+        return userLogMapper.getList(userOperateQuery);
+    }
+
+    @Override public int deleteOperateLogById(Long id) {
+        return userLogMapper.deleteOperateLogById(id);
+    }
+
+    @Override public int deleteLoginLogById(Long id) {
+        return userLogMapper.deleteLoginLogById(id);
     }
 }

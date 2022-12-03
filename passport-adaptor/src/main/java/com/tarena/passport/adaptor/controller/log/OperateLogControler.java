@@ -18,6 +18,7 @@
 package com.tarena.passport.adaptor.controller.log;
 
 import com.tarena.passport.common.pojo.model.OperateDetailDO;
+import com.tarena.passport.common.pojo.query.UserOperateQuery;
 import com.tarena.passport.doman.service.IOperateLogService;
 import com.tarena.passport.protocol.result.JsonResult;
 import java.util.ArrayList;
@@ -26,7 +27,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,8 +42,8 @@ public class OperateLogControler {
 
 
     @PostMapping("/list")
-    public JsonResult<List<OperateView>> getList(HttpServletRequest request){
-        List<OperateDetailDO> list = operateLogService.getList();
+    public JsonResult<List<OperateView>> getList(HttpServletRequest request,@RequestBody UserOperateQuery userOperateQuery){
+        List<OperateDetailDO> list = operateLogService.getList(userOperateQuery);
         List<OperateView> operateViews = new ArrayList<>();
         for (OperateDetailDO operateDetail : list) {
             OperateView operateView = new OperateView();
@@ -49,6 +52,11 @@ public class OperateLogControler {
         }
         return JsonResult.ok(operateViews);
 
+    }
+    @PostMapping("/delete/{id}")
+    public JsonResult getAll(@PathVariable Long id) {
+        operateLogService.deleteById(id);
+        return JsonResult.ok("删除成功");
     }
 
 

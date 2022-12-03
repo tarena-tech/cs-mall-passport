@@ -21,6 +21,7 @@ import com.tarena.passport.common.pojo.model.OperateDetailDO;
 import com.tarena.passport.common.pojo.model.UserLogDO;
 import com.tarena.passport.common.pojo.param.UserOperateParam;
 import com.tarena.passport.common.pojo.query.LoginLogQuery;
+import com.tarena.passport.common.pojo.query.UserOperateQuery;
 import java.util.List;
 
 public interface UserLogMapper {
@@ -31,7 +32,9 @@ public interface UserLogMapper {
 
     int insertOperateLog(UserOperateParam param);
 
-    List<OperateDetailDO> getList();
+    List<OperateDetailDO> getList(UserOperateQuery userOperateQuery);
 
-    int deleteById(Long id);
+    int deleteLoginLogById(Long id);
+
+    int deleteOperateLogById(Long id);
 }

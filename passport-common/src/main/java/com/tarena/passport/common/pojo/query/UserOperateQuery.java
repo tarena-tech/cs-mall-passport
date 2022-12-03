@@ -15,20 +15,17 @@
  * limitations under the License.
  */
 
-package com.tarena.passport.doman.repository;
+package com.tarena.passport.common.pojo.query;
 
-import com.tarena.passport.common.pojo.model.OperateDetailDO;
-import com.tarena.passport.common.pojo.param.UserOperateParam;
-import com.tarena.passport.common.pojo.query.UserOperateQuery;
-import java.util.List;
+import java.time.LocalDateTime;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
-public interface OperateLogRepository{
+@Data
+@Accessors(chain = true)
+public class UserOperateQuery {
 
-    int insertOperateLog(UserOperateParam userOperateParam);
+    private String  username;
+    private Integer state;
 
-    List<OperateDetailDO> getList(UserOperateQuery userOperateQuery);
-
-    int deleteOperateLogById(Long id);
-
-    int deleteLoginLogById(Long id);
 }

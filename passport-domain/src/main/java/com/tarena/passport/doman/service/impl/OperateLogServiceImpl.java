@@ -18,6 +18,7 @@
 package com.tarena.passport.doman.service.impl;
 
 import com.tarena.passport.common.pojo.model.OperateDetailDO;
+import com.tarena.passport.common.pojo.query.UserOperateQuery;
 import com.tarena.passport.doman.repository.OperateLogRepository;
 import com.tarena.passport.doman.service.IOperateLogService;
 import java.util.List;
@@ -30,7 +31,11 @@ public class OperateLogServiceImpl implements IOperateLogService {
     @Autowired
     private OperateLogRepository operateLogRepository;
 
-    @Override public List<OperateDetailDO> getList() {
-        return operateLogRepository.getList();
+    @Override public List<OperateDetailDO> getList(UserOperateQuery userOperateQuery) {
+        return operateLogRepository.getList(userOperateQuery);
+    }
+
+    @Override public void deleteById(Long id) {
+        operateLogRepository.deleteOperateLogById(id);
     }
 }

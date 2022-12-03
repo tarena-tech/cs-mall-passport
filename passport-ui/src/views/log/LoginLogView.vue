@@ -165,6 +165,7 @@
                         let r = response.data
                         if (r.state == 0) {
                             this.$message.error("删除成功")
+                            this.loadLoginLogList()
                         } else if (r.state == -1) {
                             localStorage.clear();
                             this.$message.error("登录失效，请重新登录")
@@ -175,6 +176,7 @@
             },
             resetForm(){
                 this.LoginQuery.username=null
+                this.LoginQuery.state=null
             }
         },
         created() {
