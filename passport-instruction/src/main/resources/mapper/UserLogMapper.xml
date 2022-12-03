@@ -67,11 +67,25 @@
         cold.operate_method ,cold.request_parameter from
         cmp_operate_log_detail cold
         INNER JOIN  cmp_admin ca on cold.admin_id=ca.id
-        order by id desc
+        <where>
+            <if test="username!=null">
+                AND username like #{username}"%"
+            </if>
+
+            <if test=" state !=null">
+                AND cold.state=#{state}
+            </if>
+            and cold.is_delete !=1 order by id desc
+        </where>
+
     </select>
 
-    <delete id="deleteById">
+    <delete id="deleteLoginLogById">
         update CMP_LOGIN_LOG_DETAIL  set is_delete=1  where login_id=#{id}
+    </delete>
+
+    <delete id="deleteOperateLogById">
+        update CMP_Operate_LOG_DETAIL  set is_delete=1  where id=#{id}
     </delete>
 
 </mapper>
