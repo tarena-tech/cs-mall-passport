@@ -22,4 +22,6 @@ import java.util.List;
 
 public interface IOperateLogService {
     List<OperateDetailDO> getList();
+
+    void deleteById(Long id);
 }

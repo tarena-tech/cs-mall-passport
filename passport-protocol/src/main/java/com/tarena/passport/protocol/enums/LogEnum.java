@@ -21,18 +21,14 @@ import lombok.Getter;
 
 @Getter
 public enum LogEnum {
-
-
     USER_PASSPORD_ERROR("密码错误"),
     USER_NOTFOUND_ERROR("用户不存在"),
     SYS_USER_DISABLE("用户已被禁用"),
-
-    SYSTEM_ERROR( "系统错误");
+    SYSTEM_ERROR("系统错误");
 
     LogEnum(String message) {
         this.message = message;
     }
-
 
     private String message;
 }

@@ -17,12 +17,9 @@
 package com.tarena.passport.common;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
-
 
 public class CommomApi {
     public static void main(String[] args) {
-        SpringApplication.run(CommomApi.class,args);
+        SpringApplication.run(CommomApi.class, args);
     }
 }

@@ -20,7 +20,6 @@ package com.tarena.passport.doman.repository;
 import com.tarena.passport.common.pojo.model.LogDetailDO;
 import com.tarena.passport.common.pojo.model.UserDO;
 import com.tarena.passport.common.pojo.model.UserLogDO;
-import com.tarena.passport.common.pojo.param.UserParam;
 import com.tarena.passport.common.pojo.query.UserQuery;
 import java.util.List;
 import org.springframework.stereotype.Repository;

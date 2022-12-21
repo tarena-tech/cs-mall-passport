@@ -21,20 +21,26 @@ import javax.servlet.http.HttpServletRequest;
 
 public class LogDetail {
 
-    public static String getLogDetail (HttpServletRequest httpServletRequest){
-        String detail="";
+    public static String getLogDetail(HttpServletRequest httpServletRequest) {
+        String detail = "";
         String requestURI = httpServletRequest.getRequestURI();
-        if (requestURI.contains("/user/login"))     detail="用户登录";
+        if (requestURI.contains("/user/login"))
+            detail = "用户登录";
 
-        if (requestURI.contains("/user/add-user"))  detail="用户新增";
+        if (requestURI.contains("/user/add-user"))
+            detail = "用户新增";
 
-        if (requestURI.contains("/user/user-list")) detail="查看用户";
+        if (requestURI.contains("/user/user-list"))
+            detail = "查看用户";
 
-        if (requestURI.contains("/user/deleteById")) detail="删除用户";
+        if (requestURI.contains("/user/deleteById"))
+            detail = "删除用户";
 
-        if (requestURI.contains("/enable")||requestURI.contains("/disable")) detail="状态修改";
+        if (requestURI.contains("/enable") || requestURI.contains("/disable"))
+            detail = "状态修改";
 
-        if (requestURI.contains("/user/update")) detail="用户修改";
+        if (requestURI.contains("/user/update"))
+            detail = "用户修改";
         return detail;
     }
 

@@ -23,7 +23,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class PassportBusinessException extends Exception {
-
     public PassportBusinessException(ResultEnum resultEnum) {
         super(resultEnum.getMessage());
         this.code = resultEnum.getCode();

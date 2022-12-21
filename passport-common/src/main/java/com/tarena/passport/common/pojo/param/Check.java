@@ -17,9 +17,11 @@
 
 package com.tarena.passport.common.pojo.param;
 
-
 public interface Check {
 
-     interface Create {}
-     interface Update {}
+    interface Create {
+    }
+
+    interface Update {
+    }
 }

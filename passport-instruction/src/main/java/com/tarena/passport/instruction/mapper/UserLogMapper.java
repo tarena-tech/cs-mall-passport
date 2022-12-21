@@ -37,4 +37,6 @@ public interface UserLogMapper {
     int deleteLoginLogById(Long id);
 
     int deleteOperateLogById(Long id);
+
+    int deleteById(Long id);
 }

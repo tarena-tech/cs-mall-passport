@@ -26,7 +26,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,24 +39,24 @@ public class OperateLogControler {
     @Autowired
     private IOperateLogService operateLogService;
 
-
     @PostMapping("/list")
-    public JsonResult<List<OperateView>> getList(HttpServletRequest request,@RequestBody UserOperateQuery userOperateQuery){
-        List<OperateDetailDO> list = operateLogService.getList(userOperateQuery);
+    public JsonResult<List<OperateView>> getList(HttpServletRequest request,
+        @RequestBody UserOperateQuery userOperateQuery) {
+        List<OperateDetailDO> list = operateLogService.getList();
         List<OperateView> operateViews = new ArrayList<>();
         for (OperateDetailDO operateDetail : list) {
             OperateView operateView = new OperateView();
-            BeanUtils.copyProperties(operateDetail,operateView);
+            BeanUtils.copyProperties(operateDetail, operateView);
             operateViews.add(operateView);
         }
         return JsonResult.ok(operateViews);
 
     }
+
     @PostMapping("/delete/{id}")
     public JsonResult getAll(@PathVariable Long id) {
         operateLogService.deleteById(id);
         return JsonResult.ok("删除成功");
     }
-
 
 }

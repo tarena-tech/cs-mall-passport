@@ -32,7 +32,7 @@ public class LoginLogServiceImpl implements ILoginLogService {
     @Autowired private LoginLogRepository logServiceRepository;
 
     @Override public List<LoginLogQuery> getList(LoginLogQuery logQuery) {
-        List<LoginLogQuery> list=logServiceRepository.getList(logQuery);
+        List<LoginLogQuery> list = logServiceRepository.getList(logQuery);
         return list;
     }
 

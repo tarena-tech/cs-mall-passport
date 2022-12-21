@@ -1,0 +1,44 @@
+json:
+  enabled: true
+  provider: fastjson
+jwt:
+  rsa:
+    enabled: true
+    private-key: |
+      -----BEGIN PRIVATE KEY-----
+      MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBANAn5giVT7oy/drc
+      o0evOFJUYSnHLbYtXG4MUuEUM2QdGX9d1q3y5k9orwX3wrt4WP4gIkQdB0EzQApp
+      WZMUbbVsibVWkVSTQ5aInPgjLjfaDlcP5U4Z1hh3QiPZ01i3AWYY8HS+2SBIlRLH
+      S5X0MjZkdbOVEPODU73JNSjFKz4XAgMBAAECgYBwXblt1LxPNYuYBBcYcVwkBWzW
+      ErF4cJA+z+RFoJQFbTgAa3WiPUdagpZI0HCMpvDTbiFRR6JM7g+aDzjNju+RUCW9
+      0iaDrB5vKyh3INMzcdCfm4btGectxb/ZCYFkXPBvqtqzK/H9ANk/Xlq1KFw0O2x2
+      fgV7swYuiZ3kSYLbEQJBAPx2gXPkpraqEPmt//ce7AP5fHxC8Td2JFROsRfyweJP
+      0dUdiLDgMxwpFZIhidU1sJBWX62Vqv6Jh/MvoMBhttsCQQDTEnqy9P+VAS1huYkl
+      XwWjbZKxHEIaxW+Bg/ombXLhGudpy+chHFy4QEgA1Puda7kxgcTMhRj1i1EliytB
+      ecR1AkEA9STJPNS4wURQKXG4y6f9+zoFk8+Y1IbmberfcWaqt2tUUEFWWpHJbz3B
+      kVz5rstsgCsuyqo7GOBI323PBR+c4wJBAJxA3dyFSn+AM5xYwZKM2Zu2jhXXGYjA
+      CGAU16aC97x1MkM704rLeEheLe+PvAU5rgtcSdgt3+BGlnf4orkB79ECQE2uNOTP
+      enyfRVLgN0j3ZLSyOSqw+kqGsoU2jpcxFCGy0RGk3z1fHVccHfspqCA7AMj9jK5O
+      3EULSLOmkXQHPLQ=
+      -----END PRIVATE KEY-----
+    expiration: 1000000
+    public-key: |
+      -----BEGIN PUBLIC KEY-----
+      MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDQJ+YIlU+6Mv3a3KNHrzhSVGEp
+      xy22LVxuDFLhFDNkHRl/Xdat8uZPaK8F98K7eFj+ICJEHQdBM0AKaVmTFG21bIm1
+      VpFUk0OWiJz4Iy432g5XD+VOGdYYd0Ij2dNYtwFmGPB0vtkgSJUSx0uV9DI2ZHWz
+      lRDzg1O9yTUoxSs+FwIDAQAB
+      -----END PUBLIC KEY-----
+
+spring:
+  datasource:
+    url: jdbc:mysql://124.71.224.210:3306/cs_mall_passport?useSSL=false&useUnicode=true&allowPublicKeyRetrieval=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    username: root
+    password: tarena2017Up;
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+logging:
+  level:
+    com.tarena.passport: trace
+
+

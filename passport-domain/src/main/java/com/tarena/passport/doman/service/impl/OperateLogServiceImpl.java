@@ -31,8 +31,12 @@ public class OperateLogServiceImpl implements IOperateLogService {
     @Autowired
     private OperateLogRepository operateLogRepository;
 
-    @Override public List<OperateDetailDO> getList(UserOperateQuery userOperateQuery) {
+    public List<OperateDetailDO> getList(UserOperateQuery userOperateQuery) {
         return operateLogRepository.getList(userOperateQuery);
+    }
+
+    @Override public List<OperateDetailDO> getList() {
+        return null;
     }
 
     @Override public void deleteById(Long id) {

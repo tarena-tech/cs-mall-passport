@@ -57,8 +57,6 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private UserRepository userRepository;
 
-
-
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -67,8 +65,6 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private OperateLogRepository operateLogRepository;
-
-
 
     @Override
     public void addNewUser(UserParam userParam, HttpServletRequest request) throws PassportBusinessException {
@@ -103,7 +99,7 @@ public class UserServiceImpl implements IUserService {
             operateLogRepository.insertOperateLog(param);
             throw new PassportBusinessException(ResultEnum.SYS_USER_ALREADY_EXISTS);
         }
-        System.out.println("param = " + param);
+        log.info("param:",param);
         operateLogRepository.insertOperateLog(param);
     }
 
@@ -112,8 +108,10 @@ public class UserServiceImpl implements IUserService {
     public String login(UserLoginParam userLoginParam, UserAddressAndBrowserNameParam userAddressAndBrowserNameparam,
         HttpServletRequest request) throws PassportBusinessException {
 
-        if (userAddressAndBrowserNameparam.getAddress()==null) throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
-        if (userAddressAndBrowserNameparam.getBrowserName()==null) throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
+        if (userAddressAndBrowserNameparam.getAddress() == null)
+            throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
+        if (userAddressAndBrowserNameparam.getBrowserName() == null)
+            throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
         String username = userLoginParam.getUsername();
         UserDO userDO = userRepository.getUserByUsername(username);
         if (userDO == null) {
@@ -125,9 +123,9 @@ public class UserServiceImpl implements IUserService {
         if (userDO == null) {
             throw new PassportBusinessException(ResultEnum.SYS_USER_NON_EXISTENT);
         }
-        int state=1;
-        log.info("登录用户信息{}",userDO);
-        log.info("登录设备{}",userAddressAndBrowserNameparam);
+        int state = 1;
+        log.info("登录用户信息{}", userDO);
+        log.info("登录设备{}", userAddressAndBrowserNameparam);
         UserLogDO log = new UserLogDO();
         log.setAdminId(userDO.getId())
             .setIp(userAddressAndBrowserNameparam.getAddress())
@@ -140,23 +138,23 @@ public class UserServiceImpl implements IUserService {
         LogDetailDO logDetail = new LogDetailDO();
         logDetail.setLoginId(log.getId());
         logDetail.setDetail(detail);
-        if (row!=1) {
-            state=0;
-            insertLogDetail(state,LogEnum.SYSTEM_ERROR.getMessage(),logDetail);
+        if (row != 1) {
+            state = 0;
+            insertLogDetail(state, LogEnum.SYSTEM_ERROR.getMessage(), logDetail);
             throw new PassportBusinessException(ResultEnum.SYSTEM_ERROR);
         }
 
-        if (!passwordEncoder.matches(userLoginParam.getPassword(),userDO.getPassword())) {
-            state=0;
+        if (!passwordEncoder.matches(userLoginParam.getPassword(), userDO.getPassword())) {
+            state = 0;
             logDetail.setState(state);
             logDetail.setDetail(LogEnum.USER_PASSPORD_ERROR.getMessage());
             userRepository.insertUserLogDetail(logDetail);
             throw new PassportBusinessException(ResultEnum.TOKEN_PASSWORD_ERROR);
 
         }
-        if (userDO.getEnable()!=1){
-            state=0;
-            insertLogDetail(state,LogEnum.SYS_USER_DISABLE.getMessage(),logDetail);
+        if (userDO.getEnable() != 1) {
+            state = 0;
+            insertLogDetail(state, LogEnum.SYS_USER_DISABLE.getMessage(), logDetail);
             throw new PassportBusinessException(ResultEnum.SYS_USER_DISABLE);
         }
         logDetail.setState(state);
@@ -172,7 +170,7 @@ public class UserServiceImpl implements IUserService {
     public UserDO getUserDetails(HttpServletRequest request) throws PassportBusinessException {
 
         LoginInfo loginInfo = jwtRSAGenerator.getLoginFromToken(request.getHeader("Authorization"), LoginInfo.class);
-        if (loginInfo==null){
+        if (loginInfo == null) {
             throw new PassportBusinessException(ResultEnum.TOKEN_EXPIRES);
         }
         UserDO userDO = userRepository.getUserByUserID(loginInfo.getId());
@@ -184,11 +182,12 @@ public class UserServiceImpl implements IUserService {
         return userDO;
     }
 
-    @Override public JsonPage<UserDO> getUserList(UserQuery query, HttpServletRequest request,Integer page,Integer pageSize) throws PassportBusinessException {
-        PageHelper.startPage(page,pageSize);
-        List<UserDO> userList=userRepository.getUserList( query);
+    @Override public JsonPage<UserDO> getUserList(UserQuery query, HttpServletRequest request, Integer page,
+        Integer pageSize) throws PassportBusinessException {
+        PageHelper.startPage(page, pageSize);
+        List<UserDO> userList = userRepository.getUserList(query);
         UserDO userDO = getUserDetails(request);
-        UserOperateParam userOperateParam = OperateDetail.KeepOperateDetail(userDO, query, request,Thread.currentThread().getStackTrace()[1].getMethodName());
+        UserOperateParam userOperateParam = OperateDetail.KeepOperateDetail(userDO, query, request, Thread.currentThread().getStackTrace()[1].getMethodName());
         operateLogRepository.insertOperateLog(userOperateParam);
 
         return JsonPage.restPage(new PageInfo<>(userList));
@@ -201,7 +200,7 @@ public class UserServiceImpl implements IUserService {
             userDO, id,
             request,
             Thread.currentThread().getStackTrace()[1].getMethodName());
-        if (userByUserID==null){
+        if (userByUserID == null) {
             userOperateParam.setState(0);
             userOperateParam.setDetail(LogEnum.USER_NOTFOUND_ERROR.getMessage());
             operateLogRepository.insertOperateLog(userOperateParam);
@@ -214,21 +213,21 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override public UserDO selectUserById(Long id, HttpServletRequest request) {
-        UserDO userDO=userRepository.selectUserById(id);
+        UserDO userDO = userRepository.selectUserById(id);
         return userDO;
     }
 
     @Override public void updateUser(UserParam user, HttpServletRequest request) throws PassportBusinessException {
         UserDO userDO = new UserDO();
-        BeanUtils.copyProperties(user,userDO);
+        BeanUtils.copyProperties(user, userDO);
         userDO.setGmtModified(new Date());
-        int row=userRepository.updateUser(userDO);
-        UserDO user2= getUserDetails(request);
+        int row = userRepository.updateUser(userDO);
+        UserDO user2 = getUserDetails(request);
         UserOperateParam userOperateParam = OperateDetail.KeepOperateDetail(
             user2, user,
             request,
             Thread.currentThread().getStackTrace()[1].getMethodName());
-        if (row==0){
+        if (row == 0) {
             userOperateParam.setState(0);
             userOperateParam.setDetail(LogEnum.USER_NOTFOUND_ERROR.getMessage());
             operateLogRepository.insertOperateLog(userOperateParam);
@@ -240,7 +239,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public void setEnable(Long id, HttpServletRequest request) throws PassportBusinessException {
-        UserDO user= getUserDetails(request);
+        UserDO user = getUserDetails(request);
         UserOperateParam userOperateParam = OperateDetail.KeepOperateDetail(
             user, id,
             request,
@@ -263,7 +262,7 @@ public class UserServiceImpl implements IUserService {
             userOperateParam.setState(0);
             userOperateParam.setDetail(LogEnum.SYSTEM_ERROR.getMessage());
             operateLogRepository.insertOperateLog(userOperateParam);
-            throw new  PassportBusinessException(ResultEnum.OK);
+            throw new PassportBusinessException(ResultEnum.OK);
         }
 
         userDO.setEnable(1);
@@ -280,7 +279,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void setDisable(Long id, HttpServletRequest request) throws PassportBusinessException {
         log.debug("开始处理【禁用管理员账号】的业务：id={}", id);
-        UserDO user= getUserDetails(request);
+        UserDO user = getUserDetails(request);
         UserOperateParam userOperateParam = OperateDetail.KeepOperateDetail(
             user, id,
             request,
@@ -315,9 +314,9 @@ public class UserServiceImpl implements IUserService {
         operateLogRepository.insertOperateLog(userOperateParam);
     }
 
-    public int insertLogDetail(int state,String detail,LogDetailDO logDetail){
+    public int insertLogDetail(int state, String detail, LogDetailDO logDetail) {
         logDetail.setState(state);
         logDetail.setDetail(detail);
-        return  userRepository.insertUserLogDetail(logDetail);
+        return userRepository.insertUserLogDetail(logDetail);
     }
 }

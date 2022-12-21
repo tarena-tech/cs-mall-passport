@@ -60,5 +60,4 @@ public class JwtRSAAutoConfiguration {
         generator.setExpiration(properties.getExpiration());
         return generator;
     }
-
 }

@@ -18,7 +18,6 @@
 package com.tarena.passport.protocol.handler;
 
 import com.tarena.passport.protocol.PassportBusinessException;
-import com.tarena.passport.protocol.enums.ResultEnum;
 import com.tarena.passport.protocol.result.JsonResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;

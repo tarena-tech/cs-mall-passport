@@ -21,7 +21,6 @@ import lombok.Getter;
 
 @Getter
 public enum ResultEnum {
-
     OK(0, "success"),
     BIND_ERROR(1, "非法入参"),
     SYSTEM_ERROR(-1, "system error"),
@@ -36,7 +35,6 @@ public enum ResultEnum {
     SYS_USER_ALREADY_EXISTS(2003, "用户名存在"),
     SYS_PHONE_ALREADY_EXISTS(2004,"手机号已注册"),
     SYS_MAILBOX_ALREADY_EXISTS(2005,"邮箱已注册");
-
     ResultEnum(Integer code, String message) {
         this.code = code;
         this.message = message;

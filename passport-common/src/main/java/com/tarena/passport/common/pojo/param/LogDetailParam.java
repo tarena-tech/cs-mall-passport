@@ -22,8 +22,8 @@ import lombok.Data;
 @Data
 public class LogDetailParam {
 
-    private String LoginId;
+    private String loginId;
     private String state;
     private String detail;
-    
+
 }

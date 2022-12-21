@@ -17,8 +17,6 @@
 
 package com.tarena.passport.common.pojo.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import java.time.LocalDateTime;
 import lombok.Data;
 
 @Data

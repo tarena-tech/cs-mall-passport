@@ -20,14 +20,12 @@ package com.tarena.passport.instruction.repository;
 import com.tarena.passport.common.pojo.model.LogDetailDO;
 import com.tarena.passport.common.pojo.model.UserDO;
 import com.tarena.passport.common.pojo.model.UserLogDO;
-import com.tarena.passport.common.pojo.param.UserParam;
 import com.tarena.passport.common.pojo.query.UserQuery;
 import com.tarena.passport.doman.repository.UserRepository;
 import com.tarena.passport.instruction.mapper.UserLogMapper;
 import com.tarena.passport.instruction.mapper.UserMapper;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -37,6 +35,7 @@ public class UserRepositry implements UserRepository {
 
     @Autowired
     private UserLogMapper userLogMapper;
+
     @Override
     public int addNewUser(UserDO userDO) {
         return userMapper.addNewUser(userDO);
@@ -63,7 +62,7 @@ public class UserRepositry implements UserRepository {
     }
 
     @Override public List<UserDO> getUserList(UserQuery query) {
-        List<UserDO> userList=userMapper.getUserList(query);
+        List<UserDO> userList = userMapper.getUserList(query);
         return userList;
     }
 
@@ -76,7 +75,7 @@ public class UserRepositry implements UserRepository {
     }
 
     @Override public int updateUser(UserDO user) {
-        return  userMapper.updateUser(user);
+        return userMapper.updateUser(user);
     }
 
     @Override public int insertUserLogDetail(LogDetailDO detail) {

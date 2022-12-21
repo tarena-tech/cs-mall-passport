@@ -22,21 +22,21 @@ import com.tarena.passport.common.pojo.param.UserAddressAndBrowserNameParam;
 import com.tarena.passport.common.pojo.param.UserLoginParam;
 import com.tarena.passport.common.pojo.param.UserParam;
 import com.tarena.passport.common.pojo.query.UserQuery;
-import com.tarena.passport.doman.repository.UserRepository;
 import com.tarena.passport.protocol.PassportBusinessException;
 import com.tarena.passport.protocol.result.JsonPage;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 public interface IUserService {
 
     void addNewUser(UserParam userParam, HttpServletRequest request) throws PassportBusinessException;
 
-    String login(UserLoginParam userLoginParam, UserAddressAndBrowserNameParam param, HttpServletRequest request) throws PassportBusinessException;
+    String login(UserLoginParam userLoginParam, UserAddressAndBrowserNameParam param,
+        HttpServletRequest request) throws PassportBusinessException;
 
     UserDO getUserDetails(HttpServletRequest request) throws PassportBusinessException;
 
-    JsonPage<UserDO> getUserList(UserQuery query, HttpServletRequest request,Integer page,Integer pageSize) throws PassportBusinessException;
+    JsonPage<UserDO> getUserList(UserQuery query, HttpServletRequest request, Integer page,
+        Integer pageSize) throws PassportBusinessException;
 
     void deleteUserById(Long id, HttpServletRequest request) throws PassportBusinessException;
 

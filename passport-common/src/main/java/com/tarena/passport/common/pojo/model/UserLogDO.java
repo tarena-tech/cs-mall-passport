@@ -17,7 +17,6 @@
 
 package com.tarena.passport.common.pojo.model;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 import lombok.experimental.Accessors;

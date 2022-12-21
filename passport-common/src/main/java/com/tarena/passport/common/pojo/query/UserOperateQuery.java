@@ -17,7 +17,6 @@
 
 package com.tarena.passport.common.pojo.query;
 
-import java.time.LocalDateTime;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -25,7 +24,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class UserOperateQuery {
 
-    private String  username;
+    private String username;
     private Integer state;
 
 }

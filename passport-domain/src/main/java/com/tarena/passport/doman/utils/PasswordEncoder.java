@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class PasswordEncoder {
-    private static final String[] version = {"$2a", "$2y", "$2b"};
+    private static final String[] VERSION = {"$2a", "$2y", "$2b"};
 
     public PasswordEncoder() {
 
@@ -34,7 +34,7 @@ public class PasswordEncoder {
     private String getsal() {
         Random random = new Random();
         int num = random.nextInt(3);
-        String replace = version[num] + UUID.randomUUID().toString().replace("-", "");
+        String replace = VERSION[num] + UUID.randomUUID().toString().replace("-", "");
         char[] chars = replace.toCharArray();
 
         for (int i = 0; i < 2; i++) {
@@ -72,7 +72,7 @@ public class PasswordEncoder {
             }
         }
 
-        return new String(chars).trim().substring(0,62);
+        return new String(chars).trim().substring(0, 62);
     }
 
     private static String md5Encoder(String password) {
@@ -126,7 +126,6 @@ public class PasswordEncoder {
         for (int i = 0; i < rules.length; i++) {
             passwordBuilder.append(passwordChars[rules[i]]);
         }
-
 
         return encoderBuilder.toString().equals(passwordBuilder.toString());
     }

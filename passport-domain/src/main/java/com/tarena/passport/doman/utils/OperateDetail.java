@@ -26,10 +26,13 @@ import javax.servlet.http.HttpServletRequest;
 
 public class OperateDetail {
 
-    public static<T> UserOperateParam KeepOperateDetail(UserDO userDO,T t, HttpServletRequest request,String operateMethod){
+    public static <T> UserOperateParam KeepOperateDetail(UserDO userDO, T t, HttpServletRequest request,
+        String operateMethod) {
         UserOperateParam param = new UserOperateParam();
-        if  (t instanceof UserDO )  ((UserDO) t).setPassword("{protected}");
-        if  (t instanceof UserParam) ((UserParam) t).setPassword("{protected}");
+        if (t instanceof UserDO)
+            ((UserDO) t).setPassword("{protected}");
+        if (t instanceof UserParam)
+            ((UserParam) t).setPassword("{protected}");
         param.setAdminId(userDO.getId())
             .setRequestParameter(JSON.toJSON(t).toString())
             .setGmtOperate(LocalDateTime.now())

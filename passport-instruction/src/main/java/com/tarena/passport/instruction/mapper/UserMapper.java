@@ -18,10 +18,7 @@
 package com.tarena.passport.instruction.mapper;
 
 import com.tarena.passport.common.pojo.model.LogDetailDO;
-import com.tarena.passport.common.pojo.model.OperateDetailDO;
 import com.tarena.passport.common.pojo.model.UserDO;
-import com.tarena.passport.common.pojo.model.UserLogDO;
-import com.tarena.passport.common.pojo.param.UserParam;
 import com.tarena.passport.common.pojo.query.UserQuery;
 import java.util.List;
 

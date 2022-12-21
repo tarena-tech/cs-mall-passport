@@ -22,8 +22,8 @@ import lombok.Data;
 @Data
 public class LogDetailDO {
 
-    private Long LoginId;
+    private Long loginId;
     private Integer state;
     private String detail;
-    
+
 }

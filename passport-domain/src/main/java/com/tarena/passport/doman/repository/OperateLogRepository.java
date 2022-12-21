@@ -22,7 +22,7 @@ import com.tarena.passport.common.pojo.param.UserOperateParam;
 import com.tarena.passport.common.pojo.query.UserOperateQuery;
 import java.util.List;
 
-public interface OperateLogRepository{
+public interface OperateLogRepository {
 
     int insertOperateLog(UserOperateParam userOperateParam);
 

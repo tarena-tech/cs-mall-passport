@@ -22,6 +22,7 @@ import com.tarena.passport.doman.service.ILoginLogService;
 import com.tarena.passport.protocol.result.JsonResult;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,19 +33,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/log/login")
 @RestController
+@Slf4j
 public class LoginLogControler {
 
     @Autowired
     private ILoginLogService loginLogService;
 
     @PostMapping("/list")
-    public JsonResult<List<LoginView>> getAll(@RequestBody LoginLogQuery logQuery){
-        System.out.println("logQuery = " + logQuery);
+    public JsonResult<List<LoginView>> getAll(@RequestBody LoginLogQuery logQuery) {
+        log.info("logQuery:{}",logQuery);
         List<LoginLogQuery> list = loginLogService.getList(logQuery);
         ArrayList<LoginView> views = new ArrayList<>();
         for (LoginLogQuery query : list) {
             LoginView loginView = new LoginView();
-            BeanUtils.copyProperties(query,loginView);
+            BeanUtils.copyProperties(query, loginView);
             views.add(loginView);
         }
         return JsonResult.ok(views);

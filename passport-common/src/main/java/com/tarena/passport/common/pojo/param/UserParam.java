@@ -18,7 +18,6 @@
 package com.tarena.passport.common.pojo.param;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
