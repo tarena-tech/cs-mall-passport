@@ -36,6 +36,7 @@
         <guava.version>30.1.1-jre</guava.version>
         <commons-codec.version>1.15</commons-codec.version>
         <pagehelper-spring-boot.version>1.4.0</pagehelper-spring-boot.version>
+        <servlet-api.version>2.5</servlet-api.version>
     </properties>
 
 
@@ -59,6 +60,11 @@
     <dependencyManagement>
 
         <dependencies>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <version>${servlet-api.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.nimbusds</groupId>
                 <artifactId>nimbus-jose-jwt</artifactId>
